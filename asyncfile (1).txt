@@ -1,0 +1,587 @@
+var router = global.express.Router();
+var pool = global.pool;
+var bcrypt = global.bcrypt;
+var jwt = global.jwt;
+var _ = global._;
+const mongoose = global.mongoose;
+var SiteModel = require('../models/site');
+var BuildingModel = require('../models/building');
+var SectionModel = require('../models/sections');
+var FloorModel = require('../models/floors');
+var BleModel = require('../models/ble');
+var SeatModel = require('../models/seats');
+var SensorDataModel = require('../models/sensorData');
+var SeatToBle = require('../models/sensorToBle');
+var UserModel = require('../models/users');
+var RoomToBle = require("../models/roomToBle");
+var moment = require('moment-timezone');
+var HostModel = require('../models/hosts');
+var HostLogs = require('../models/hostLogs');
+var EmployeeModel = require('../models/employees');
+const excelAgg = require('../models/excelAggregation');
+var json2csv = require('json2csv');
+var fs = require('fs');
+var reA = /[^a-zA-Z]/g;
+var reN = /[^0-9]/g;
+
+const analytics = require('../controllers/analytics');
+
+var nodemailer = require('nodemailer');
+var SMTPTransport = require("nodemailer-smtp-transport");
+const path = require('path');
+const util = require('util');
+const exec = require('child_process').exec;
+
+var smtpTransport = nodemailer.createTransport(SMTPTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // use SSL
+    auth: {
+        user: 'info@arraystorm.com',
+        pass: 'arraystorm@2016'
+    }
+}));
+
+var sortAlphaNum = function(a, b) {
+    var aA = a.name.replace(reA, "");
+    var bA = b.name.replace(reA, "");
+    if (aA === bA) {
+        var aN = parseInt(a.name.replace(reN, ""), 10);
+        var bN = parseInt(b.name.replace(reN, ""), 10);
+        return aN === bN ? 0 : aN < bN ? 1 : -1;
+    } else {
+        return aA < bA ? 1 : -1;
+    }
+};
+
+Number.prototype.pad = function(size) {
+    var s = String(this);
+    while (s.length < (size || 2)) { s = "0" + s; }
+    return s;
+};
+String.prototype.toTitleCase = function() {
+    return this.replace(/\w\S*/g, function(txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+};
+var sortAlphaNumrev = function(a, b) {
+    var aA = a.name.replace(reA, "");
+    var bA = b.name.replace(reA, "");
+    if (aA === bA) {
+        var aN = parseInt(a.name.replace(reN, ""), 10);
+        var bN = parseInt(b.name.replace(reN, ""), 10);
+        return aN === bN ? 0 : aN > bN ? 1 : -1;
+    } else {
+        return aA > bA ? 1 : -1;
+    }
+};
+
+var styles = {
+    headerDark: {
+        font: {
+            bold: true
+        }
+    }
+};
+
+router.get('/getRoomsInFloor/:floorId', function(req, res, next) {
+    var floor = req.params.floorId;
+    RoomToBle.aggregate([{ $match: { floorId: mongoose.Types.ObjectId(floor) } },
+        { $lookup: { from: "sections", localField: "roomId", foreignField: "_id", as: "sectionsData" } }, { $unwind: "$sectionsData" },
+        { $project: { name: "$sectionsData.name", roomId: "$sectionsData._id", bleId: "$bleId", floorId: "$floorId", capacity: "$sectionsData.capacity" } }
+    ], function(err, roomData) {
+        if (err)
+            res.send(err)
+        if (roomData.length) {
+            res.send(roomData)
+        }
+    })
+})
+
+router.get('/roomsCount/:buildingId', function(req, res, next) {
+    var building = req.params.buildingId;
+    var buildingData = {}
+    var count = 0;
+    var pCount = 0;
+    BuildingModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(building) } },
+        { $lookup: { from: "roomtobles", localField: "floors", foreignField: "floorId", as: "roomData" } },
+        { $project: { buildingName: "$alias", rooms: "$roomData" } }
+    ], function(err, bData) {
+        buildingData.name = bData[0].buildingName;
+        buildingData.totalRooms = bData[0].rooms.length.pad(2);
+        bData[0].rooms.forEach(function(r) {
+            if (r.peopleCount > 0) {
+                count = count + 1;
+                pCount = pCount + r.peopleCount;
+            }
+        })
+        buildingData.utilization = Math.round((count / bData[0].rooms.length) * 100).pad(2)
+        buildingData.averagePeople = Math.round(pCount / bData[0].rooms.length).pad(2)
+        res.send(buildingData)
+    })
+})
+
+router.get('/availableRooms/:buildingId', function(req, res, next) {
+    var building = req.params.buildingId;
+    var availableRooms = [];
+    BuildingModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(building) } },
+        { $lookup: { from: "floors", localField: "floors", foreignField: "_id", as: "floorData" } }, { $unwind: "$floorData" },
+        { $project: { floorName: "$floorData.alias", id: "$floorData._id" } },
+        { $lookup: { from: "roomtobles", localField: "id", foreignField: "floorId", as: "roomData" } }, { $unwind: "$roomData" },
+        { $group: { _id: "$roomData.floorId", name: { $first: "$floorName" }, rooms: { $push: "$roomData" } } }
+    ], function(err, rData) {
+        if (err)
+            res.send(err)
+        if (rData.length) {
+            rData.forEach(function(r) {
+                // availableRooms.push({ 'name': r.name, 'z': r.rooms.length, y: 1 });
+                // availableRooms.sort(function(a, b) { return a.z - b.z });                 /*variable-pie-chart*/
+                availableRooms.push({ 'name': r.name, 'y': r.rooms.length, });
+                availableRooms.sort(function(a, b) { return a.y - b.y }); /*semi-circle-chart*/
+            })
+            res.send(availableRooms)
+        }
+    })
+})
+
+async function getCount(i, dayStart, dayEnd, roomData) {
+    var data = {}
+    var d = await SensorDataModel.aggregate([{ $match: { time: { $gte: new Date(dayStart), $lte: new Date(dayEnd) }, sensorId: mongoose.Types.ObjectId(roomData.sensorId) } },
+        // { $group: { _id: "$time", averageDensity: { $avg: "$density" }, sensor: { $first: "$sensorId" } } },
+        { $group: { _id: "$sensorId", peopleCount: { $avg: "$density" }, actualCount: { $sum: "$density" } } }
+    ]);
+    if (d.length) {
+        data.hour = i
+        data.peopleCount = Math.round(d[0].peopleCount)
+        data.actualCount = d[0].actualCount
+            // console.log(d[0]._id, d[0].peopleCount, (d[0].peopleCount))
+        return data
+    } else {
+        data.hour = i
+        data.peopleCount = 0
+        data.actualCount = 0;
+        return data
+    }
+}
+
+
+router.post('/getHourlyPeopleCount', function(req, res, next) {
+    var roomData = req.body
+    var rooms = {}
+    var dataValues = {}
+    dataValues.labels = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"];
+    var hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    var dataDate = new Date(roomData.date);
+    var finalData = []
+    SectionModel.findOne({ _id: roomData.roomId }, function(err, rData) {
+        if (err)
+            console.log(err)
+        if (rData) {
+            rooms.capacity = rData.capacity
+            rooms.name = rData.name
+        }
+    })
+    BuildingModel.findOne({ _id: roomData.buildingId }, function(err, bData) {
+        if (err)
+            res.send(err)
+        if (bData) {
+            hours.forEach(async function(i) {
+                var dayStart = moment.tz(dataDate.getFullYear() + '-' + (parseInt(dataDate.getMonth() + 1).pad(2)) + '-' + parseInt(dataDate.getDate()).pad(2) + 'T' + i.pad(2) + ':00:00', bData.timezone)
+                var dayEnd = moment.tz(dataDate.getFullYear() + '-' + parseInt(dataDate.getMonth() + 1).pad(2) + '-' + parseInt(dataDate.getDate()).pad(2) + 'T' + i.pad(2) + ':59:59', bData.timezone)
+                var d = await getCount(i, dayStart, dayEnd, roomData)
+                if (d) {
+                    finalData.push(d)
+                    finalData.sort(function(a, b) { return a.hour - b.hour })
+                    if (finalData.length == 24) {
+                        dataValues.values = []
+                        var pcount = 0,
+                            occupiedTime = 0,
+                            maxMin = [];
+                        finalData.forEach(function(values) {
+                            if (values.peopleCount > 0) {
+                                pcount = pcount + values.peopleCount
+                                maxMin.push(values.peopleCount)
+                                maxMin.sort(function(a, b) { return a - b })
+                                occupiedTime++
+                            }
+                            dataValues.values.push(values.peopleCount)
+                        })
+                        if (occupiedTime == 0) {
+                            dataValues.average = 0
+                            dataValues.max = 0
+                            dataValues.min = 0
+                            dataValues.utilization = 0
+                        } else {
+                            dataValues.average = Math.round(pcount / occupiedTime)
+                            dataValues.max = maxMin[maxMin.length - 1]
+                            dataValues.min = maxMin[0]
+                            dataValues.roomName = rooms.name
+                            dataValues.utilization = Math.round((dataValues.average / rooms.capacity) * 100)
+                        }
+                        res.send(dataValues)
+                    }
+                }
+            })
+        }
+    })
+})
+
+async function buildingDetails(roomData) {
+    var bData = await BuildingModel.findOne({ _id: roomData.buildingId })
+    return bData;
+}
+
+async function hourDetails(roomData, res) {
+    var dataValues = {}
+    dataValues.labels = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"];
+    var hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    var dataDate = new Date(roomData.start);
+    var finalData = []
+    var bData = buildingDetails(roomData)
+    hours.forEach(async function(i) {
+        var dayStart = moment.tz(dataDate.getFullYear() + '-' + (parseInt(dataDate.getMonth() + 1).pad(2)) + '-' + parseInt(dataDate.getDate()).pad(2) + 'T' + i.pad(2) + ':00:00', bData.timezone)
+        var dayEnd = moment.tz(dataDate.getFullYear() + '-' + parseInt(dataDate.getMonth() + 1).pad(2) + '-' + parseInt(dataDate.getDate()).pad(2) + 'T' + i.pad(2) + ':59:59', bData.timezone)
+        var d = await getCount(i, dayStart, dayEnd, roomData)
+        if (d) {
+            finalData.push(d)
+            finalData.sort(function(a, b) { return a.hour - b.hour })
+            if (finalData.length == 24) {
+                dataValues.values = []
+                var pcount = 0,
+                    acount = 0,
+                    occupiedTime = 0,
+                    maxMin = [];
+                finalData.forEach(function(values) {
+                    if (values.peopleCount > 0) {
+                        acount = acount + values.actualCount
+                        pcount = pcount + values.peopleCount
+                        maxMin.push(values.peopleCount)
+                        maxMin.sort(function(a, b) { return a - b })
+                        occupiedTime++
+                    }
+                    dataValues.values.push(values.peopleCount)
+                })
+                if (occupiedTime == 0) {
+                    dataValues.average = 0
+                    dataValues.max = 0
+                    dataValues.min = 0
+                    dataValues.capacity = roomData.capacity
+                    dataValues.utilization = 0
+                } else {
+                    var av = Math.round(acount / 240)
+                    dataValues.average = Math.round(pcount / 24)
+                    dataValues.max = maxMin[maxMin.length - 1]
+                    dataValues.min = maxMin[0]
+                    dataValues.roomName = roomData.name
+                    dataValues.capacity = roomData.capacity
+                    dataValues.utilization = Math.round((av / roomData.capacity) * 100)
+                }
+                res.send(dataValues)
+            }
+        }
+    })
+}
+
+async function getCount1(dayStart, dayEnd, roomData) {
+    var data = {}
+    var d = await SensorDataModel.aggregate([{ $match: { time: { $gte: new Date(dayStart), $lte: new Date(dayEnd) }, sensorId: mongoose.Types.ObjectId(roomData.sensorId) } },
+        // { $group: { _id: "$time", averageDensity: { $avg: "$density" }, sensor: { $first: "$sensorId" } } },
+        { $group: { _id: "$sensorId", peopleCount: { $avg: "$density" }, actualCount: { $sum: "$density" } } }
+    ]);
+    if (d.length) {
+        data.hour = dayStart
+        data.peopleCount = Math.round(d[0].peopleCount)
+        data.actualCount = d[0].actualCount
+        return data
+    } else {
+        data.hour = dayStart
+        data.peopleCount = 0
+        data.actualCount = 0
+        return data
+    }
+}
+
+async function hourDetailsRange(roomData, diff, res) {
+    var dataValues = {}
+    dataValues.labels = []
+    var weekDays = []
+    var s = new Date(roomData.start)
+    var e = new Date(roomData.end)
+    var bData = buildingDetails(roomData)
+    for (var start = new Date(s); start <= new Date(e); start.setDate(start.getDate() + 1)) {
+        var dayStart = moment.tz(start.getFullYear() + '-' + (parseInt(start.getMonth() + 1).pad(2)) + '-' + parseInt(start.getDate()).pad(2) + 'T00:00:00', bData.timezone)
+        weekDays.push({ 'date': new Date(dayStart), 'dateString': start.getDate() + '-' + (start.getMonth() + 1) + '-' + start.getFullYear() })
+    }
+    if (weekDays.length == diff) {
+        var count = 0,
+            pending = weekDays.length;
+        var finalData = []
+        weekDays.forEach(async function(w) {
+            var dataDate = new Date(w.date);
+            dataValues.labels.push(w.dateString)
+            var dayStart = moment.tz(dataDate.getFullYear() + '-' + (parseInt(dataDate.getMonth() + 1).pad(2)) + '-' + parseInt(dataDate.getDate()).pad(2) + 'T00:00:00', bData.timezone)
+            var dayEnd = moment.tz(dataDate.getFullYear() + '-' + parseInt(dataDate.getMonth() + 1).pad(2) + '-' + parseInt(dataDate.getDate()).pad(2) + 'T23:59:59', bData.timezone)
+            var d = await getCount1(dayStart, dayEnd, roomData)
+            if (d) {
+                finalData.push(d)
+                finalData.sort(function(a, b) { return a.hour - b.hour })
+                if (finalData.length == diff) {
+                    dataValues.values = []
+                    var pcount = 0,
+                        occupiedTime = 0,
+                        maxMin = [];
+                    finalData.forEach(function(values) {
+                        if (values.peopleCount > 0) {
+                            pcount = pcount + values.actualCount
+                            maxMin.push(values.peopleCount)
+                            maxMin.sort(function(a, b) { return a - b })
+                            occupiedTime++
+                        }
+                        dataValues.values.push(values.peopleCount)
+                    })
+                    if (occupiedTime == 0) {
+                        dataValues.average = 0
+                        dataValues.max = 0
+                        dataValues.min = 0
+                        dataValues.roomName = roomData.name
+                        dataValues.capacity = roomData.capacity
+                        dataValues.utilization = 0
+                    } else {
+                        dataValues.average = Math.round(pcount / (240 * diff))
+                        dataValues.max = maxMin[maxMin.length - 1]
+                        dataValues.min = maxMin[0]
+                        dataValues.roomName = roomData.name
+                        dataValues.capacity = roomData.capacity
+                        dataValues.utilization = Math.round((dataValues.average / roomData.capacity) * 100)
+                    }
+                    res.send(dataValues)
+                }
+
+            }
+        })
+    }
+
+}
+
+router.post('/getHourlyPeopleCount1', function(req, res, next) {
+    var roomData = req.body
+    var s = new Date(roomData.start)
+    var e = new Date(roomData.end)
+    var diff = Math.round((e.getTime() - s.getTime()) / (24 * 60 * 60 * 1000)) + 1
+    if (diff == 1)
+        hourDetails(roomData, res)
+    else {
+        hourDetailsRange(roomData, diff, res)
+    }
+})
+
+router.post('/getRoomHoursCount', function(req, res, next) {
+    var inputData = req.body;
+    var start = new Date(inputData.start)
+    var end = new Date(inputData.end)
+    var diff = ((end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000)) + 1
+    var sensorId;
+    var finalData = {}
+    finalData.floorName = inputData.floorName
+    finalData.labels = []
+    finalData.values = []
+    RoomToBle.aggregate([{ $match: { floorId: mongoose.Types.ObjectId(inputData.floorId) } },
+        { $lookup: { from: "sections", localField: "roomId", foreignField: "_id", as: "sectionData" } }, { $unwind: "$sectionData" },
+        { $project: { bleId: "$bleId", sec: "$roomId", name: "$sectionData.name" } }
+    ], function(err, rData) {
+        if (err)
+            console.log(err)
+        if (rData.length) {
+            sensorId = rData.map(function(room) { return room })
+            if (sensorId.length) {
+                BuildingModel.findOne({ _id: inputData.buildingId }, function(err, bData) {
+                    if (err)
+                        res.send(err)
+                    if (bData) {
+                        sensorId.forEach(function(s) {
+                            var dayStart = moment.tz(start.getFullYear() + '-' + (parseInt(start.getMonth() + 1).pad(2)) + '-' + parseInt(start.getDate()).pad(2) + 'T00:00:00', bData.timezone)
+                            var dayEnd = moment.tz(end.getFullYear() + '-' + parseInt(end.getMonth() + 1).pad(2) + '-' + parseInt(end.getDate()).pad(2) + 'T23:59:59', bData.timezone)
+                            SensorDataModel.aggregate([{ $match: { sensorId: s.bleId, time: { $gte: new Date(dayStart), $lte: new Date(dayEnd) }, density: { $gt: 0 } } },
+                                { $group: { _id: "$time" } },
+                                { $group: { _id: null, count: { $sum: 1 } } },
+                                { $project: { room: s.bleId, hours: { $avg: "$count" } } }
+                            ], function(err, sData) {
+                                if (err)
+                                    console.log(err)
+                                if (sData.length) {
+                                    var n = ((sData[0].hours / 10) / diff).toFixed(2)
+                                    finalData.values.push(parseFloat(n))
+                                    finalData.labels.push(s.name)
+                                    if (finalData.values.length == sensorId.length) {
+                                        res.send(finalData)
+                                    }
+                                } else {
+                                    finalData.values.push(0)
+                                    finalData.labels.push(s.name)
+                                    if (finalData.values.length == sensorId.length) {
+                                        res.send(finalData)
+                                    }
+                                }
+                            })
+                        })
+                    }
+                })
+            }
+        }
+    })
+})
+
+async function getSensorUsedHours(s, dayStart, dayEnd) {
+    var d = await SensorDataModel.aggregate([{ $match: { sensorId: s.bleId, time: { $gte: new Date(dayStart), $lte: new Date(dayEnd) }, density: { $gt: 0 } } },
+        { $group: { _id: '$sensorId', hours: { $sum: 1 }, pcount: { $sum: "$density" } } }
+    ])
+    return d;
+}
+
+async function getRoomsInBuilding(inputData) {
+    var d = await RoomToBle.aggregate([{ $match: { floorId: { $in: inputData.floors } } },
+        { $lookup: { from: "sections", localField: "roomId", foreignField: "_id", as: "sectionData" } }, { $unwind: "$sectionData" },
+        { $project: { bleId: "$bleId", sec: "$roomId", name: "$sectionData.name", capacity: "$sectionData.capacity" } }
+    ])
+    return d
+}
+
+async function hoursUsedData(inputData, res) {
+    // console.log('hi')
+    var bData = await buildingDetails(inputData)
+    var rData = await getRoomsInBuilding(bData)
+    var st = new Date(inputData.start)
+    var en = new Date(inputData.end)
+    var weekDays = [];
+    var finalData = {}
+    var finalDataPer = {}
+    finalData.labels = []
+    finalData.values = []
+    finalDataPer.labels = []
+    finalDataPer.values = []
+    var diff = ((en.getTime() - st.getTime()) / (24 * 60 * 60 * 1000)) + 1
+    var sensorId = rData.map(function(room) { return room })
+    sensorId.sort(function(x, y) {
+        var a = x.name.toLowerCase();
+        var b = y.name.toLowerCase();
+        if (a < b) { return -1; }
+        if (a > b) { return 1; }
+        return 0;
+    });
+    for (var start = new Date(st); start <= new Date(en); start.setDate(start.getDate() + 1)) {
+        var day = moment.tz(start.getFullYear() + '-' + (parseInt(start.getMonth() + 1).pad(2)) + '-' + parseInt(start.getDate()).pad(2) + 'T00:00:00', bData.timezone)
+        weekDays.push({ 'date': new Date(day), 'dateString': start.getDate() + '-' + (start.getMonth() + 1) + '-' + start.getFullYear() })
+            // console.log(weekDays)
+    }
+    if (weekDays.length == diff) {
+        weekDays.forEach(function(value1, j) {
+            var wDate = new Date(value1.date)
+            sensorId.forEach(async function(value2, i) {
+                if (finalData.labels.length <= sensorId.length - 1) {
+                    finalData.labels.push(value2.name)
+                    finalDataPer.labels.push(value2.name)
+                }
+                // console.log(1, value2.capacity, value2.name)
+                var matrix, matrix1;
+                var dayStart = moment.tz(wDate.getFullYear() + '-' + (parseInt(wDate.getMonth() + 1).pad(2)) + '-' + parseInt(wDate.getDate()).pad(2) + 'T00:00:00', bData.timezone)
+                var dayEnd = moment.tz(wDate.getFullYear() + '-' + parseInt(wDate.getMonth() + 1).pad(2) + '-' + parseInt(wDate.getDate()).pad(2) + 'T23:59:59', bData.timezone)
+                var sData = await getSensorUsedHours(value2, dayStart, dayEnd)
+                if (sData.length) {
+
+                    matrix = [i, j, sData[0].hours / 10, value2.name]
+                        // matrix1 = [i, j, parseFloat(((Math.ceil(sData[0].pcount / 240) / value2.capacity) * 100).toFixed(2)), value2.name]
+                        // matrix1 = [i, j, Math.round(Math.round((sData[0].pcount / 240) / value2.capacity) * 100), value2.name]
+                    var average = Math.round(sData[0].pcount / 240)
+                    var utilization = Math.round((average / value2.capacity) * 100)
+                    matrix1 = [i, j, utilization, value2.name]
+                        // console.log(value2.name + ' = ' + (sData[0].pcount / 240) + '/' + value2.capacity + '  == ' + parseFloat((((sData[0].pcount / 240) / value2.capacity) * 100).toFixed(2)), sData[0].hours)
+                        // console.log(matrix1, value2.name)
+                        // console.log(2, average, value2.capacity, utilization, value2.name)
+                    finalData.values.push(matrix)
+                    finalDataPer.values.push(matrix1)
+                } else {
+                    matrix = [i, j, 0, value2.name]
+                    matrix1 = [i, j, 0]
+                    finalData.values.push(matrix)
+                    finalDataPer.values.push(matrix1)
+                }
+                if (finalData.values.length == (diff * sensorId.length)) {
+                    res.send({ 'actual': finalData, 'percentage': finalDataPer })
+                }
+            })
+        })
+    }
+}
+
+router.post('/getRoomHoursCount1', function(req, res, next) {
+    var inputData = req.body;
+    hoursUsedData(inputData, res)
+})
+
+
+router.post('/deleteRepeatedTime', function(req, res, next) {
+    var inputData = req.body;
+    var start = new Date(inputData.start)
+    var end = new Date(inputData.end)
+    var sensorId;
+    var finalData = {}
+    finalData.labels = []
+    finalData.values = []
+    RoomToBle.aggregate([{ $match: { floorId: mongoose.Types.ObjectId(inputData.floorId) } },
+        { $lookup: { from: "sections", localField: "roomId", foreignField: "_id", as: "sectionData" } }, { $unwind: "$sectionData" },
+        { $project: { bleId: "$bleId", sec: "$roomId", name: "$sectionData.name" } }
+    ], function(err, rData) {
+        if (err)
+            console.log(err)
+        if (rData.length) {
+            sensorId = rData.map(function(room) { return room })
+            if (sensorId.length) {
+                BuildingModel.findOne({ _id: inputData.buildingId }, function(err, bData) {
+                    if (err)
+                        res.send(err)
+                    if (bData) {
+                        var dayStart = moment.tz(start.getFullYear() + '-' + (parseInt(start.getMonth() + 1).pad(2)) + '-' + parseInt(start.getDate()).pad(2) + 'T00:00:00', bData.timezone)
+                        var dayEnd = moment.tz(end.getFullYear() + '-' + parseInt(end.getMonth() + 1).pad(2) + '-' + parseInt(end.getDate()).pad(2) + 'T23:59:59', bData.timezone)
+                        SensorDataModel.aggregate([{ $match: { sensorId: sensorId[0].bleId, time: { $gte: new Date(dayStart), $lte: new Date(dayEnd) }, density: { $gt: 0 } } },
+                            { $group: { _id: { time: "$time", sensor: "$sensorId" }, count: { $sum: 1 }, dataId: { $push: "$_id" } } }, { $match: { count: { $gt: 1 } } }
+                        ], function(err, sData) {
+                            if (err)
+                                console.log(err)
+                            if (sData.length) {
+                                sData.forEach(function(sec) {
+                                    // for (var i = 0; i < (sec.dataId.length - 1); i++) {
+                                    var a = sec.dataId.slice(1, sec.dataId.length)
+                                    SensorDataModel.remove({ _id: { $in: a } }, function(err, secData) {
+                                        if (err)
+                                            console.log(err)
+                                        if (secData)
+                                            console.log('done')
+                                    })
+
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    })
+})
+
+router.get('/deleteBu/:buildingId', function(req, res, next) {
+    var buildingId = req.params.buildingId;
+    SectionModel.aggregate([{ $match: { isRoom: false } }, { $lookup: { from: "floors", localField: "_id", foreignField: "sections", as: "buData" } }, { $match: { "buData.buildingId": mongoose.Types.ObjectId(buildingId) } }, { $project: { "secId": "$_id", "secName": "$name" } }], function(err, data) {
+        if (err)
+            console.log(err)
+        if (data.length) {
+            data.forEach(function(s, i) {
+                SectionModel.remove({ _id: mongoose.Types.ObjectId(s.secId) }, function(err, data1) {
+                    if (data1) {
+                        FloorModel.update({ sections: mongoose.Types.ObjectId(s.secId) }, { $pull: { sections: mongoose.Types.ObjectId(s.secId) } }, { multi: true }, function(err, data2) {
+                            console.log(data2, i)
+                        })
+                    }
+                })
+            })
+        }
+    })
+})
+module.exports = router;
