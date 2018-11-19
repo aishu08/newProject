@@ -1,0 +1,73 @@
+.building_container
+{
+    background-color:#00937d;
+    color:white!important;
+    width:100%;
+}
+.title_height
+{
+    height: 80px;
+}
+.comparision-card-title
+{
+    background:#2a2a2a;
+    color:#fff;
+}
+md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar{
+    color:#00937d!important;
+    background:#00937d!important;
+}
+md-tabs.md-default-theme md-ink-bar, md-tabs md-ink{
+    color:#00937d!important;
+    background:#00937d!important;
+}
+.rombus-compare{
+    -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    height:60px;
+    width:190px;
+    margin-top:-20px;
+    transition: 0.3s all ease-in-out;
+}
+
+.text-align{
+    margin-top:15px;
+}
+
+.progress_div{
+    width: 350px;
+    margin-left: 50px;
+    display: table-cell;
+}
+
+ .progress_div .progress_bar{
+    -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    height:60px;
+    width:190px;
+    background-color: rgba(110,110,110,.35);
+    margin-top:-20px;
+    transition: 0.3s all ease-in-out;
+}
+
+.progress_div .progress_bar > div{
+    background-color: rgba(0,147,125,.65);
+    height: 60px;
+}
+
+.building_name{
+    position: relative;
+    top: -25px;
+    left: 41px;
+}
+.back-button{
+    position:fixed;
+    bottom:7px;
+    right:100px;
+}
+
+
+
+
+
+

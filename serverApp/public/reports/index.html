@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="RadarChart.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-pie-chart/2.1.6/jquery.easypiechart.min.js"></script>
+    <link rel="stylesheet" href="report.css">
+    <!--  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Libre+Franklin" rel="stylesheet">
+    <style>
+        body {
+            -webkit-print-color-adjust: exact;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="report-header">
+            <span class="client-logo">
+            </span>
+            <span class=" report-heading text-center">
+                Occupancy Management System
+            </span>
+        </div>
+    </div>
+    <div>
+        <div class="adappt-report" style="page-break-after: always;">
+            <div style="padding: 10px 0px;">
+                <table style="width: 100%;border-collapse: collapse; ">
+                    <tr>
+                        <td style="width:13%">
+                            <label>
+                                <b>Date of Report Generation</b> 
+                            </label>
+                        </td>
+                        <td> <label>:<span id= 'date-today'></span></label></td>
+                        <td align="right">
+                            <label><b>Site Location:</b> Adappt</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="">
+                            <label><b>Report Period</b> 
+                            </label>
+                        </td>
+                        <td><label>:<span id= 'date-today1'></span> from 12:00 AM to <span id = 'date-endDate'></span> <span id="currentTime"></span></label></td>
+                        <td align="right">
+                            <label>Building 2</label>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                    <tbody>
+                        <tr>
+                            <td class="sub-header">
+                                <h3 class="header" style="margin: 0px;">OCCUPANCY STATISTICS</h3>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="display: inline-block; top: -20px; position: relative;">
+                    <col width="130">
+                    <col width="40">
+                    <col width="80">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Total Seats
+                            </td>
+                            <td>
+                                :
+                            </td>
+                            <td>
+                                <span id="totalSeats">1590</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Total Used Seats
+                            </td>
+                            <td>
+                                :
+                            </td>
+                            <td>
+                                <span id="totalUsedSeats">1590</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="big-text"><span id="totalUsedSeats1">1590</span>/<span id="totalSeats1">1590</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="buildingPercent">
+                    <span id="buildingPercentValue">40%</span>
+                </div>
+                <hr>
+            </div>
+            <!-- <hr style="border-color:grey;"> -->
+            <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td class="sub-header">
+                            <h3 class="header" style="margin: 0px;">FULL BUILDING STATISTICS</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                    <tr>
+                        <div id="occupancy" style="width: 100%; height: 450px"></div>
+                    </tr>
+                    <tr>
+                        <div id="bar-graph" style="width: 100%; height: 400px">
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="adappt-report" style="page-break-after: always;">
+                <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                    <tbody>
+                        <tr>
+                            <td class="sub-header">
+                                <h3 class="header" style="margin: 0px;">LEVEL 1 STATISTICS</h3>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <div id="occupancy1" style="width: 100%; height: 450px"></div>
+                        </tr>
+                        <tr>
+                            <div id="room-util1" style="width: 100%; height: 350px"></div>
+                        </tr>
+                        <tr>
+                            <td width="200" style="text-align: center">
+                                <h3>Average Floor Temperature</h3>
+                                <img src="thermometer.png" width="150"><span class="big-text" id="avgTemp1">23&degC</span>
+                            </td>
+                            <td>
+                                <div id="temp-util1" style="width: 100%; height: 350px"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="adappt-report" style="page-break-after: always;">
+                <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                    <tbody>
+                        <tr>
+                            <td class="sub-header">
+                                <h3 class="header" style="margin: 0px;">LEVEL 7 STATISTICS</h3>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <div id="occupancy2" style="width: 100%; height: 450px"></div>
+                        </tr>
+                        <tr>
+                            <div id="room-util2" style="width: 100%; height: 350px"></div>
+                        </tr>
+                        <tr>
+                            <td width="200" style="text-align: center">
+                                <h3>Average Floor Temperature</h3>
+                                <img src="thermometer.png" width="150"><span class="big-text" id="avgTemp2">23&degC</span>
+                            </td>
+                            <td>
+                                <div id="temp-util2" style="width: 100%; height: 350px"></div>
+            </div>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+        <div class="adappt-report" style="page-break-after: always;">
+            <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td class="sub-header">
+                            <h3 class="header" style="margin: 0px;">LEVEL 8 STATISTICS</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <div id="occupancy3" style="width: 100%; height: 450px"></div>
+                    </tr>
+                    <tr>
+                        <div id="room-util3" style="width: 100%; height: 350px"></div>
+                    </tr>
+                    <tr>
+                        <td width="200" style="text-align: center">
+                            <h3>Average Floor Temperature</h3>
+                            <img src="thermometer.png" width="150"><span class="big-text" id="avgTemp3">23&degC</span>
+                        </td>
+                        <td>
+                            <div id="temp-util3" style="width: 100%; height: 350px"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="adappt-report" style="page-break-after: always;">
+            <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td class="sub-header">
+                            <h3 class="header" style="margin: 0px;">LEVEL 9 STATISTICS</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <div id="occupancy4" style="width: 100%; height: 450px"></div>
+                    </tr>
+                    <tr>
+                        <div id="room-util4" style="width: 100%; height: 350px"></div>
+                    </tr>
+                    <tr>
+                        <td width="200" style="text-align: center">
+                            <h3>Average Floor Temperature</h3>
+                            <img src="thermometer.png" width="150"><span class="big-text" id="avgTemp4">23&degC</span>
+                        </td>
+                        <td>
+                            <div id="temp-util4" style="width: 100%; height: 350px"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="adappt-report" style="page-break-after: always;">
+            <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td class="sub-header">
+                            <h3 class="header" style="margin: 0px;">LEVEL 10 STATISTICS</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <div id="occupancy5" style="width: 100%; height: 450px"></div>
+                    </tr>
+                    <tr>
+                        <div id="room-util5" style="width: 100%; height: 350px"></div>
+                    </tr>
+                    <tr>
+                        <td width="200" style="text-align: center">
+                            <h3>Average Floor Temperature</h3>
+                            <img src="thermometer.png" width="150"><span class="big-text" id="avgTemp5">23&degC</span>
+                        </td>
+                        <td>
+                            <div id="temp-util5" style="width: 100%; height: 350px"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<md-dialog aria-label="Seat Config" layout-padding>
+    <h4>{{selectedSeat.name}}</h4>
+    
+    <md-content layout = "row" layout-align = "space-around center">  
+        <md-input-container class="md-block popup" flex>
+            <input required md-no-asterisk type="text" ng-model="selectedRoom.name" placeholder="Room name"/>
+        </md-input-container>
+
+        <md-input-container class="md-block popup" flex>
+            <input required md-no-asterisk type="text" ng-model="selectedRoom.bles.address" placeholder="Sensor Address"/>
+        </md-input-container>
+         <md-input-container class="md-block popup" flex>
+            <input required md-no-asterisk type="number" ng-model="selectedRoom.capacity" placeholder="Room Capacity"/>
+        </md-input-container>
+        <md-input-container flex>
+            <div flex layout = "column" layout-align = "center stretch">
+                <md-button class="md-raised md-primary" ng-click = "UpdateRoom(selectedRoom)">Update</md-button>
+            </div>
+        </md-input-container>
+        <md-input-container flex>
+            <div flex layout = "column" layout-align = "center stretch">
+                <md-button class="md-raised md-warn" ng-click = "RemoveRoom(selectedRoom)">Remove</md-button>
+            </div>
+        </md-input-container>
+        <md-input-container flex = 10>
+            <md-button class="md-raised md-primary md-fab md-mini md-primary" ng-click = "done()">
+                <md-icon class="material-icons">done</md-icon>
+            </md-button>
+        </md-input-container>
+    </md-content>
+</md-dialog>

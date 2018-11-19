@@ -1,0 +1,28 @@
+<md-container layout="row" class="full-height">
+    <md-content layout="column" flex style="height:100vh">
+
+        <!-- <md-content flex class="adappt-watermark-image-dark"> -->
+        <section layout="row" class="full-height" ng-cloak ng-class="{'blurred':blur_content}" flex>
+            <md-content layout="row" layout-align="center center" flex>
+                <div layout="column" flex="90">
+                    <md-card layout="column" flex>
+                        <md-card-header layout="row" class="banner user-mgt" flex="20">
+                            <span flex="80">User-Management</span>
+                            <div flex="20" class="text-right">
+                                <md-button class="md-fab md-mini addbutton delete-icon" ng-click="userDialog()">
+                                    <i class="material-icons addicon">add</i>
+                                    <md-tooltip md-direction="bottom" class="md-tooltip-bottom">Add User</md-tooltip>
+                                </md-button>
+                            </div>
+                        </md-card-header>
+                        <div flex id="grid1" ui-grid="gridOptions" class="grid" ui-grid-resize-columns ui-grid-auto-resize ui-grid-edit flex></div>
+
+                    </md-card>
+                    <span class="text-white">{{msg}}</span>
+                </div>
+            </md-content>
+        </section>
+        <!-- </md-content> -->
+
+    </md-content>
+</md-container>

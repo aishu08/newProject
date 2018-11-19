@@ -1,0 +1,52 @@
+.md-tooltip
+{
+    background: #5D5D5D!important;
+    color: #FFF!important;
+    padding: 6px 6px!important;
+    text-align: center;
+    border-radius: 3px!important;
+    font-size: 11px!important;
+    opacity: 1!important;
+   /* min-width: 70px;
+    max-width: 97px;*/
+    overflow: visible!important;
+    box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.5)
+}
+.md-tooltip::after
+{
+    content: "";
+    position: absolute;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #5D5D5D transparent transparent transparent;
+    left: -15%;
+    top: 2%;
+}
+.md-tooltip-top::after
+{
+    border-color: #5D5D5D transparent transparent transparent;
+    top: 100%;
+    left: 45%;
+}
+
+.md-tooltip-bottom::after
+{
+    border-color: transparent transparent #5D5D5D transparent;
+    top: -35%;
+    left: 45%;
+}
+
+.md-tooltip-left::after
+{
+    border-color: transparent transparent transparent #5D5D5D;
+    top: 10px;
+    left: 100%;
+}
+
+.md-tooltip-right::after
+{
+    border-color: transparent #5D5D5D transparent transparent ;
+    top: 10px;
+    left: -11%;
+}
+

@@ -1,0 +1,29 @@
+<md-dialog aria-label="Seat Config" layout-padding>
+    <h4>Fill BU details</h4>
+    <form name="buform" ng-submit="SaveBu(buobj,buform)">
+        <md-content layout="row" layout-align="space-around center">
+
+            <md-input-container class="md-block popup" flex>
+                <input required md-no-asterisk name="name" type="text" ng-model="buobj.name" placeholder="BU name" />
+            </md-input-container>
+            <md-input-container class="md-block popup" flex>
+                <input required md-no-asterisk name="maxseat" type="number" ng-model="buobj.maxseats" placeholder="Max Seats" />
+            </md-input-container>
+            <md-input-container class="md-block popup" flex>
+                <md-datepicker required name="expdate" layout="row" ng-model="buobj.expDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+            </md-input-container>
+            <md-input-container flex>
+                <div flex layout="column" layout-align="center stretch">
+                    <md-button class="md-raised md-primary" type="submit">Save</md-button>
+                </div>
+            </md-input-container>
+
+            <md-input-container flex>
+                <md-button class="md-raised md-primary" ng-click="done()">
+                    Cancel
+                </md-button>
+            </md-input-container>
+
+        </md-content>
+    </form>
+</md-dialog>

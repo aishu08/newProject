@@ -1,0 +1,76 @@
+<md-sidenav flex="15" md-component-id="left" class="md-sidenav-left md-whiteframe-glow-z1 dark-side-nav" md-is-locked-open="$mdMedia('gt-sm')">
+    <a class="alink ">
+        <div layout="column" layout-align="center center" class="margin-top activecircle " ng-click="changeView('dashboard')">
+            <div ng-class="{ 'stick-horizontal' : pageActive == 'dashboard' || pageActive == '' }"></div>
+            <div class="round service">
+                <div class="service-circle" ng-class="{ 'active' : pageActive == 'dashboard' || pageActive == ''}">
+                    <div class="circle">
+                        <div class="innercircle"></div>
+                    </div>
+                    <md-icon class="material-icons menu2 text-white">group</md-icon>
+                    <md-tooltip direction="bottom" class="md-tooltip md-tooltip-bottom">Occupancy Management System</md-tooltip>
+                </div>
+            </div>
+            <div class="down_arrow"></div>
+        </div>
+    </a>
+    <a class="alink">
+        <div layout="column" layout-align="center center" class="activecircle" ng-click="changeView('ldashboard')">
+            <div ng-class="{ 'stick-horizontal' : pageActive == 'ldashboard' }"></div>
+            <div class="round service">
+                <div class="service-circle" ng-class="{ 'active' : pageActive == 'ldashboard' }">
+                    <div class="circle">
+                        <div class="innercircle"></div>
+                    </div>
+                    <md-icon class="material-icons menu2 text-white">lightbulb_outline</md-icon>
+                    <md-tooltip direction="bottom" class="md-tooltip md-tooltip-bottom">Lighting Management System</md-tooltip>
+                </div>
+            </div>
+            <div class="down_arrow"></div>
+        </div>
+    </a>
+    <a disabled ui-sref="" class="alink">
+        <div layout="column" layout-align="center center" class="activecircle" ng-click="crbsClick()">
+            <div ng-class="{ 'stick-horizontal' : pageActive == 'crbsPage' }"></div>
+            <div class="round service">
+                <div class="service-circle" ng-class="{ 'active' : pageActive == 'crbsPage' }">
+                    <div class="circle">
+                        <div class="innercircle"></div>
+                    </div>
+                    <md-icon class="material-icons menu2 text-white">credit_card</md-icon>
+                    <md-tooltip direction="bottom" class="md-tooltip md-tooltip-bottom">Conference Room Booking</md-tooltip>
+                </div>
+            </div>
+            <div class="down_arrow"></div>
+        </div>
+    </a>
+    <!-- <a ui-sref="floorPeopleCounting" class="alink">
+        <div layout="column" layout-align="center center" class="activecircle">
+            <div ng-class="{ 'stick-horizontal' : pageActive == 'pplCountPage' }"></div>
+            <div class="round service">
+                <div class="service-circle" ng-class="{ 'active' : pageActive == 'pplCountPage' }">
+                    <div class="circle">
+                        <div class="innercircle"></div>
+                    </div>
+                    <i class="fa fa-users menu2 text-white"></i>
+                    <md-tooltip direction="bottom" class="md-tooltip md-tooltip-bottom">Flap Barrier Counting</md-tooltip>
+                </div>
+            </div>
+            <div class="down_arrow"></div>
+        </div>
+    </a> -->
+    <a class="alink">
+        <div layout="column" layout-align="center center" class="activecircle" ng-click="changeView('seatDashboard')">
+            <div ng-class="{ 'stick-horizontal' : pageActive == 'seatDashboard' }"></div>
+            <div class="round service">
+                <div class="service-circle" ng-class="{ 'active' : pageActive == 'seatDashboard' }">
+                    <div class="circle">
+                        <div class="innercircle"></div>
+                    </div>
+                    <i class="material-icons menu2 text-white">event_seat</i>
+                    <md-tooltip direction="bottom" class="md-tooltip md-tooltip-bottom">Seat Allocation</md-tooltip>
+                </div>
+            </div>
+        </div>
+    </a>
+</md-sidenav>

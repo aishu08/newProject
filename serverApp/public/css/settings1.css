@@ -1,0 +1,222 @@
+.zoneLights
+{
+    background: #FFBF00!important;
+    box-shadow: 0px 0px 5px #FFBF00;
+}
+
+.sceneLights
+{
+    background: #FFF!important;
+}
+
+.scheduleLights
+{
+    background: #006093!important;
+}
+
+
+.zoneBackground
+{
+    height:50px;
+    text-align:center;
+    cursor:pointer;
+    background:rgba(0,147,125,.31);
+    margin-top: 5px;
+}
+
+.zoneExpandBackground
+{
+    height:50px;
+    text-align:center;
+    cursor:pointer;
+    background:rgba(0,147,125,.21);
+}
+.sceneBackground
+{
+    height:50px;
+    text-align:center;
+    cursor:pointer;
+    background:rgba(0,147,125,.1);
+}
+
+md-toast.md-success-toast-theme .md-toast-content {
+    background-color: #00937D;
+    color: #FFF;
+}
+
+.zoneExpand
+{
+    max-height: 0px;
+    overflow: hidden;
+    -webkit-transition: max-height 0.5s ease-in-out;
+    -moz-transition: max-height 0.5s ease-in-out;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.zoneExpanding
+{
+    max-height: 1500px;
+
+}
+
+.plusSettings
+{
+    margin:5px 0px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: #00937D;
+    text-align: center;
+    cursor: pointer;
+}
+
+.focusButton
+{
+    color: #FFF!important;
+    background-color: rgba(0, 147, 125, .3)!important;
+}
+
+
+
+
+.circular-menu {
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.circle1 {
+  width: 250px;
+  height: 250px;
+  opacity: 0;
+  
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  transform: scale(0);
+
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  transition: all 0.4s ease-out;
+}
+
+.open.circle1 {
+  opacity: 1;
+
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  transform: scale(1);
+}
+
+.circle1 div {
+  text-decoration: none;
+  color: white;
+  display: block;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  margin-left: -20px;
+  margin-top: -20px;
+  position: absolute;
+  text-align: center;
+
+}
+
+.circle1 div:hover {
+  color: #00937d;
+}
+
+.menu-button {
+  position: absolute;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  text-decoration: none;
+  text-align: center;
+  color: #444;
+  border-radius: 50%;
+  display: block;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  padding: 10px;
+  background: #dde;
+}
+
+.menu-button:hover {
+  background-color: #eef;
+}
+
+/* Author stuff */
+h1.author {
+  text-align:center;
+  color: white;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
+h1.author div {
+  color: #348;
+  text-decoration:none;
+}
+
+h1.author div:hover {
+  color: #ddd;
+} 
+
+.icon-position
+{
+    text-align: center;
+}
+
+md-option .md-text
+{
+    width: 100%;
+}
+
+.slow-spin {
+    -webkit-animation: fa-spin 6s infinite linear;
+    animation: fa-spin 6s infinite linear;
+    cursor: pointer;
+  }
+.settingTheme .md-select-value{
+    color: #ddd!important;
+}
+md-select.settingTheme .md-select-value.md-select-placeholder {
+    color: #ddd!important;
+}
+
+md-select.settingTheme .md-select-value {
+    border-bottom-color: #ddd!important;
+}
+
+.settingTheme .md-select-value .md-select-icon {
+    color: #ddd!important;
+}
+
+.plusIcon {
+    margin-top: 7px;
+    color: #FFF;
+}
+
+.scheduleInput1 {
+    padding: 0px 10px;
+}
+
+.scheduleInput {
+    width: 100%;
+    color: #FFF !important;
+    border-color: #FFF !important;
+}
+
+.dialogInput
+{
+    width: 100%;
+    margin: 18px 0px 0px 0px;
+}
+
+.days-style {
+    border: 1px solid #00937D;
+    text-align: center;
+    margin: 0px 1px;
+    color: #FFF;
+}

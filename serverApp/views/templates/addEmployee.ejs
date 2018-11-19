@@ -1,0 +1,55 @@
+<md-dialog aria-label="Autocomplete Dialog">
+    <div class="md-toolbar-tools border-bottom">
+        <span>Enter details for Adding new Employee</span>
+    </div>
+    <md-dialog-content class="md-dialog-content" ng-cloak>
+        <form name="dialogform">
+            <span>Enter Employee Id</span>
+            <div flex>
+                <md-input-container class="md-block input_container" md-no-float>
+                    <input required placeholder="Employee ID" type="text" ng-model="employee.id" />
+                </md-input-container>
+            </div>
+            <span>Enter FirstName</span>
+            <div flex>
+                <md-input-container class="md-block input_container" md-no-float>
+                    <input required placeholder="FirstName" type="text" ng-model="employee.fname" />
+                </md-input-container>
+            </div>
+            <span>Enter LastName</span>
+            <div flex>
+                <md-input-container class="md-block input_container" md-no-float>
+                    <input required placeholder="LastName" type="text" ng-model="employee.lname" />
+                </md-input-container>
+            </div>
+            <span>Enter the email-id</span>
+            <div flex>
+                <md-input-container class="md-block input_container" md-no-float>
+                    <input required placeholder="Email-id" type="email" name="user.email" ng-model="employee.email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+
+                    <div ng-messages="dialogform.email.$error" role="alert">
+                        <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                            Please enter a valid email id.
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+                <!-- <div flex="50" layout="row" layout-align="center center">
+                    <md-input-container>
+                        <label>Start Time</label>
+                        <input ng-model="employee.sTime" mobiscroll-time="startTimeSettings" class="scheduleInput" placeholder="Start Time" />
+                    </md-input-container>
+                </div>
+                <div flex="50" layout="row" layout-align="center center">
+                    <md-input-container>
+                        <label>End Time</label>
+                        <input ng-model="employee.eTime" mobiscroll-time="endTimeSettings" class="scheduleInput" placeholder="End Time" />
+                    </md-input-container>
+                </div> -->
+                </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-primary md-raised" ng-click="addEmployee()">Add</md-button>
+        <md-button class="md-primary md-raised" ng-click="cancelEmp()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>

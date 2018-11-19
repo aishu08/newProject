@@ -1,0 +1,155 @@
+<section layout="row" class="full-height" ng-controller="dateCtrl" ng-cloak flex>   
+    <md-content layout="column" layout-fill>
+        <%- include("../includes/toolbar")%>
+        <md-content layout="column" class="adappt-watermark-image-dark" flex>
+            <div>
+                <md-card ng-show="paramvar" layout="row" class="card-container transparent" layout-wrap>
+                    <div flex="25" flex-sm="50" flex-xs="100" flex-md="50" layout="row" layout-align="center center">
+                        <div flex="20" layout="row" layout-align="center center" class="">
+                            <md-icon class="floorwise-logo" md-whiteframe="3" md-svg-src = '../img/noun_51470_cc.svg' md-svg-class=""></md-icon>
+                        </div>
+                        <div flex="80">
+                            <md-select ng-model="floor" placeholder="Floor Selection"  md-container-class="container_1" class="selector-margin">
+                                <md-option><em>None</em></md-option>
+                                <md-option value="level1">Level-1</md-option>
+                                <md-option value="level2">Level-2</md-option>
+                                <md-option value="level3">Level-3</md-option>
+                                <md-option value="level4">Level-4</md-option>
+                                <md-option value="level5">Level-5</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div flex="25" flex-sm="50" flex-xs="100" flex-md="50" layout="row" layout-align="center center">
+                        <div flex="20" layout="row" layout-align="center center"  >
+                            <i class="material-icons floorwise-logo" md-whiteframe="3" >&#xE0AF;</i>
+                        </div>
+                        <div flex="80">
+                            <md-select ng-model="bu" placeholder="Business Unit Selection" class="selector-margin" multiple>
+                                <md-optgroup label="Business Units">
+                                    <md-option value="workspace">Workspace</md-option>
+                                    <md-option value="meetingroom">Meeting Room</md-option>
+                                    <md-option value="gsp">GSP</md-option>
+                                    <md-option value="conference">Conference Room</md-option>
+                                </md-optgroup>
+                            </md-select>     
+                        </div>
+                    </div>
+                    <div flex="25" flex-sm="50" flex-xs="100" flex-md="50" layout="row" layout-align = "center center" >
+                        <div flex="20" layout="row" layout-align="center center">
+                           <i class="fa fa-filter fa-lg floorwise-logo"  md-whiteframe="3" aria-hidden="true"></i>
+                        </div>
+                        <div flex="80">
+                            <md-select placeholder="Parameter Selection" ng-model="selectedparameter" class="selector-margin" multiple>
+                                <md-optgroup label="Parameters">
+                                    <md-option value="temp">No Of Lights ON</md-option>
+                                    <md-option value="Pressure">Temperature</md-option>
+                                    <md-option value="Occupancy">Occupancy</md-option>
+                                    <md-option value="Noise">Power Utilization</md-option>
+                                  </md-optgroup>
+                            </md-select>   
+                        </div>
+                    </div>
+                    <div flex="25" flex-sm="50" flex-xs="100" flex-md="50" layout = "row" layout-align = "center center" class="inpt-date-cnt"  >
+                        <div flex="20" layout="row" layout-align="center center">
+                            <i class="material-icons floorwise-logo" md-whiteframe="3" aria-hidden="true">date_range</i>
+                        </div>
+                        <div flex="80">
+                            <md-date-range
+                             ng-model="selectedRange" 
+                             placeholder="Select Date Range" 
+                             aria-invalid="false">
+                            </md-date-range> 
+                        </div>
+                        </div>
+                </md-card>
+            </div>
+            <div layout="column" flex>
+                <md-card layout="column" class="tabs-card transparent" flex>
+                    <md-tabs flex>
+                        <md-tab label="Layout">
+                            <md-content class="tab-content-container" ng-class="{'lighttheme':switchdata}">
+                                <div class="floor-layout-dark">
+                                </div>
+                            </md-content>
+                        </md-tab>
+                            <md-tab label="Analytics">
+                                <div layout="row" layout-align="center center">
+                                    <md-card flex="100" layout="column" layout-align="center stretch" class="chart-card">
+                                        <div layout="row" class="banner text-center" flex="10">
+                                            <div flex="95" class="text-center"> <h4>Power Consumption per Hour</h4></div>
+                                            <md-button class="md-icon-button medium-icon-btn ">
+                                                <md-icon flex="5"><i class="material-icons icon-white">help_outline</i>  </md-icon>
+                                                <md-tooltip md-direction="bottom" class="md-panel md-tooltip md-tooltip-bottom">Help</md-tooltip>
+                                            </md-button>
+                                        </div>
+                                        <md-content layout="column" layout-align="center center"flex="90" ng-init="loading(loaddata)">
+                                            <div class="progress-container" flex layout = "row" layout-align = "center center" ng-show = "loadingOccupancyChart">
+                                                <md-progress-circular md-diameter="75"></md-progress-circular>
+                                            </div>
+                                            <occupancy-chart data="occupancydata" graph-title="occupanytitle" ng-show="chartData"></occupancy-chart>
+                                            <div flex layout = "row" layout-align = "center center" ng-show = "loadingError" class="error-container text-white">
+                                                <i class="material-icons icon-white">warning</i>
+                                                <p>ERROR LOADING DATA</p>
+                                            </div>
+                                        </md-content>
+                                    </md-card>
+                                </div>
+
+                              
+                                <div layout="row" layout-align="center center">
+                                    <md-card flex="100" layout="column" layout-align="center stretch" class="chart-card">
+                                        <div layout="row" class="banner" flex="10">
+                                            <div flex="95" class="text-center"> <h4>Full building Power Consumption per day</h4></div>
+                                            <md-button class="md-icon-button medium-icon-btn ">
+                                                <md-icon flex="5"><i class="material-icons icon-white">help_outline</i>  </md-icon>
+                                                <md-tooltip md-direction="bottom" class="md-panel md-tooltip md-tooltip-bottom">Help</md-tooltip>
+                                            </md-button>
+                                        </div>
+                                        <md-content layout="column" layout-align="center center"flex="90" ng-init="loading(loaddata)">
+                                            <div class="progress-container" flex layout = "row" layout-align = "center center" ng-show = "loadingmaxstack">
+                                                <md-progress-circular md-diameter="75"></md-progress-circular>
+                                            </div>
+                                            <max-stack-chart data="maxstackdata" graph-title="maxstacktitle" ng-show="chartData"></max-stack-chart>
+                                            <div flex layout = "row" layout-align = "center center" ng-show = "loadingError" class="error-container text-white">
+                                                <i class="material-icons icon-white">warning</i>
+                                                <p>ERROR LOADING DATA</p>
+                                            </div>
+                                        </md-content>
+                                    </md-card>
+                                </div>
+
+                               
+                                <div layout="row" layout-align="center center">
+                                    <md-card flex="100" layout="column" layout-align="center stretch" class="chart-card">
+                                        <div layout="row" class="banner" flex="10">
+                                            <div flex="95" class="text-center"> <h4>Power Consumption per Floor</h4></div>
+                                            <md-button class="md-icon-button medium-icon-btn ">
+                                                <md-icon flex="5"><i class="material-icons icon-white">help_outline</i>  </md-icon>
+                                                <md-tooltip md-direction="bottom" class="md-panel md-tooltip md-tooltip-bottom">Help</md-tooltip>
+                                            </md-button>
+                                        </div>
+                                        <md-content layout="column" layout-align="center center"flex="90" ng-init="loading(loaddata)">
+                                            <div class="progress-container" flex layout = "row" layout-align = "center center" ng-show = "loadingBarChart">
+                                                <md-progress-circular md-diameter="75"></md-progress-circular>
+                                            </div>
+                                            <bar-graph data="bargraphdata" graph-title="bargraphtitle" ng-show="chartData"></bar-graph>
+                                            <div flex layout = "row" layout-align = "center center" ng-show = "loadingError" class="error-container text-white">
+                                                <i class="material-icons icon-white">warning</i>
+                                                <p>ERROR LOADING DATA</p>
+                                            </div>
+                                        </md-content>
+                                    </md-card>
+                                </div>
+                            </md-tab>
+                            <md-tab label="Compare">
+                            <md-content class="md-padding" style="color:#ddd">
+                              <h1 class="md-display-2">Comparision</h1>
+                              <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+                            </md-content>
+                        </md-tab>
+                    </md-tabs>
+                </md-card>
+            </div>
+       </md-content>
+    </md-content>
+</section>

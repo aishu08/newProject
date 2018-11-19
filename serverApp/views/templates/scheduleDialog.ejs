@@ -1,0 +1,27 @@
+<md-dialog style="z-index:20;width:270px;height:170px;">
+    <div style="background: #00937D;color:white">
+        <h3 style="text-align: center;padding:0px 10px;">{{lightSelected.lightName}}</h3>
+    </div>
+    <div layout='row' layout-align="center center" style="padding:0px 15px;" flex>
+        <div flex="20">
+            <div layout="column">
+                <h5 style="text-align:center;">Off/on</h5>
+                <md-switch ng-model="lightSwitch" ng-change="switchAndSlider()" class="md-primary switch"></md-switch>
+            </div>
+        </div>
+        <div flex="80" ng-hide="parent == 5 || parent == 6 || parent == 7">
+            <div layout="column">
+                <h5 style="text-align:center;">Intensity Slider</h5>
+                <md-slider ng-model="lightSlider" md-discrete class="md-primary" flex min="5" max="99">
+                </md-slider> 
+            </div>
+        </div>
+    </div>
+    <md-button class="md-primary md-raised" ng-click="addScheduleLights(lightSelected)">
+        <h4>Done</h4>
+    </md-button>
+    <!-- <md-button ng-show="ExistingLight == 1" class="md-danger md-raised" ng-click="deleteLights(lightSelected, parent, child )" layout="row">
+        <i class="material-icons" flex="25">delete_forever</i>
+        <h4 flex="75">Delete</h4>
+    </md-button> -->
+</md-dialog>

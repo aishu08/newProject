@@ -1,0 +1,56 @@
+<!-- ng-controller="SeatTypeSettingCtrl" -->
+<div flex=25>
+    <img src="img/chair.png" class="dialogimage">
+    <md-dialog aria-label="Autocomplete Dialog Example" class="md-padding" flex=100 style="background-color: rgb(43, 43, 43)">
+        <div layout="row" class="md-toolbar-tools">
+
+            <h3 class="border-bottom dialogheader">Edit Seat Type</h3>
+        </div>
+        <form type="post" name="seattypeform" ng-submit="updateseattype(seattype,seattypeform)">
+            <md-dialog-content class="md-dialog-content text-dark" ng-cloak>
+
+                <md-input-container class="md-block text-white">
+                    <input required md-no-asterisk type="text" name="name" ng-model="seattype.name" placeholder="Seat Type Name" />
+                    <div ng-messages="seattypeform.name.$error">
+                        <div ng-message="required">Seat Type Name is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block text-white">
+                    <input required md-no-asterisk type="number" name="area" ng-model="seattype.area" ng-pattern="/^[0-9]*$/" ng-minlength="1"
+                        placeholder="Area Seat Requires in SqFt." />
+                    <div ng-messages="seattypeform.area.$error">
+                        <div ng-message="required">Area Seat Requires in SqFt is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block text-white">
+                    <input required md-no-asterisk type="number" name="cost" ng-pattern="/^[0-9]*$/" ng-minlength="1" ng-model="seattype.cost"
+                        placeholder="Cost" />
+                    <div ng-messages="seattypeform.cost.$error">
+                        <div ng-message="required">Cost Requires in numbers is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block text-white">
+                    <md-select placeholder="Select Shape" required name="shape" class="darktheme" ng-model="selectedshape">
+                        <md-optgroup label="Seat Shape">
+                            <md-option ng-repeat="shape in shapes" ng-value="shape">{{shape.name}}</md-option>
+                        </md-optgroup>
+                    </md-select>
+                    <div ng-messages="seattypeform.shape.$error">
+                        <div ng-message="required">Shape is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block text-white">
+                    <input md-no-asterisk type="text" name="discription" ng-model="seattype.discription" placeholder="Discription" />
+
+                </md-input-container>            
+
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button class="md-raised md-primary" ng-click="removeseattype(seattype)">Remove</md-button>
+                <md-button class="md-raised md-primary" type="submit">Done</md-button>
+
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</div>

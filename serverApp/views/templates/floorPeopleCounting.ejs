@@ -1,0 +1,75 @@
+<section layout="column" flex class="full-height">
+    <%- include("../includes/toolbar")%>
+    <md-content class="md-padding adappt-watermark-image-dark" layout="column" flex>
+        <div layout="row" flex="30">
+            <div flex="8" hide-sm hide-xs hide-md>
+                <md-card layout='row' layout-align="center center" class="transparent" flex="100">
+                    <div flex="100" layout="row" layout-align="center center">
+                        <md-button ui-sref="index.dashboard" class="md-primary md-raised back_btn">
+                            <i class="fa fa fa-chevron-left back_icon"></i>
+                            <span class="back_text">Back</span>
+                        </md-button>
+                    </div>
+                </md-card>
+            </div>
+            <div class="lightcolor text-center" flex>
+                <h3>FACILITY NAME: Barclays Pune</h3>
+                <h3>FLOOR NUMBER: 3</h3>
+            </div>
+            <div flex="20">
+                <md-card md-whiteframe="3" layout="row" class="adappt-clock-card">
+                    <div flex="30" layout="row" layout-align="center center" class="card-icon">
+                        <i class="material-icons icon">query_builder</i>
+                    </div>
+                    <div flex="70">
+                        <div class="text-center">
+                            <h3 class="text-center card-h3">{{day}}</h3>
+                            <p>
+                                <span class="big-text">{{time}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+        </div>
+        <div layout="row" flex>
+            <div layout="row" layout-align="start end" flex="30">
+                <md-card layout="column" layout-align="center center" class="cardcolor transperent">
+                    <h3 class="borderbottom">LEGEND</h3>
+                    <hr>
+                    <div class="text-left" layout="column">
+                        <div class="inline">
+                            <div class="green circle inline"></div>
+                            <h4 class="inline"> &nbsp;&nbsp;
+                                < 70% GREEN</h4>
+                        </div>
+                        <div class="inline">
+                            <div class="yellow circle inline"></div>
+                            <h4 class="inline">&nbsp;&nbsp;70%-80% YELLOW </h4>
+                        </div>
+                        <div class="inline">
+                            <div class="amber circle inline"></div>
+                            <h4 class="inline">&nbsp;&nbsp;80%-90% AMBER</h4>
+                        </div>
+                        <div class="inline">
+                            <div class="red circle inline"></div>
+                            <h4 class="inline">&nbsp;&nbsp;90%-100% RED</h4>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div layout="column" flex="40">
+                <div layout="row" layout-align="center center">
+                    <div flex="75">
+                        <div easypiechart options="options" percent="percent"></div>
+                        <div class="measure"><span class="big-text">{{filled}}</span><span class="small-text">/{{total}}</span></div>
+                    </div>
+                    <div flex="25">
+                        <div easypiechart options="opt" percent="percent"></div>
+                        <h4 class="measure1">{{percent}}%</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-content>
+</section>

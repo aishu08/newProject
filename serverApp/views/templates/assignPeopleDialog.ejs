@@ -1,0 +1,59 @@
+<md-dialog aria-label="Autocomplete Dialog" ng-class="blur_content" flex="25 " class="dark_popup">
+    <div class="md-toolbar-tools border-bottom ">
+        <span>Employee Details</span>
+    </div>
+    <md-dialog-content class="md-dialog-content border-bottom " ng-cloak>
+        <div layout="column">
+            <div layout="row">
+                <h4 flex="50">Profile Image:</h4>
+                <img class="image " width="85px " height="85px " border-radius="50% " ng-src="./img/employee_imgs/{{selectedEmployee.employeeId}}-{{selectedEmployee.profileImage}} " lazy-src>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h4 flex="50">Employee Id:</h4>
+                <h4 class="capitalize" flex="50">{{selectedEmployee.employeeId}}</h4>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h4 flex="50">First Name:</h4>
+                <h4 flex="50" class="capitalize">{{selectedEmployee.firstName}}</h4>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h4 flex="50">Last Name:</h4>
+                <h4 flex="50" class="capitalize">{{selectedEmployee.lastName}}</h4>
+            </div>
+
+            <div layout="row" layout-align="center center">
+                <h4 flex="50">Email:</h4>
+                <h4 flex="50" class="">{{selectedEmployee.email}}</h4>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h4 flex="50">Shift:</h4>
+                <h4 flex="50" class="capitalized">{{selectedEmployee.shiftTimings}}</h4>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h4 flex="50">Reporting Manager:</h4>
+                <h4 flex="50" class="capitalize">{{selectedEmployee.reportingManager.name}}</h4>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h4 flex="50">Department:</h4>
+                <h4 flex="50" class="capitalize">{{selectedEmployee.department}}</h4>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h4 flex="50">Seat Name:</h4>
+                <h4 flex="50" class="capitalize">{{selectedSeat.name}}</h4>
+            </div>
+            <!-- <div layout="row">
+                <h4 flex="50">Assets:</h4>
+                <h4 class="capitalize" ng-repeat="asset in selectedEmployee.assetNames">{{asset}}
+                    <sapn>&nbsp;&nbsp;</sapn>
+                </h4>
+            </div> -->
+
+            <!-- ng-repeat="asset in selectedEmployee.assetNames" -->
+
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="md-toolbar-tools">
+        <md-button class="md-primary md-raised " ng-click="removeEmp(selectedSeat) ">Remove Employee</md-button>
+        <md-button class="md-primary md-raised " ng-click="cancel() ">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>

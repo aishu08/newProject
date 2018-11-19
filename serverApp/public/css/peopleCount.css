@@ -1,0 +1,64 @@
+.cardcolor {
+    padding: 20px 35px 20px 35px;
+}
+
+.borderbottom {
+    border-bottom: 1px solid #fff;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.green {
+    background-color: #43cc25;
+}
+
+.yellow {
+    background-color: #f0e83d;
+}
+
+.amber {
+    background-color: #FFC200;
+}
+
+.red {
+    background-color: #dd2611;
+}
+
+.black {
+    background-color: #040404;
+}
+
+.transperent {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ddd;
+}
+
+.circle {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    transform: scale(1)
+}
+
+.lightcolor {
+    text-align: center;
+    color: #fff;
+}
+
+.measure {
+    position: relative;
+    top: -221px;
+    left: 160px;
+    color: #fff;
+    font-size: 25px;
+}
+
+.measure1 {
+    position: relative;
+    top: -121px;
+    left: 82px;
+    color: #fff;
+    font-size: 25px;
+}

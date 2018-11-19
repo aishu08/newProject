@@ -1,0 +1,74 @@
+<div flex=25>
+    <img src="img/chair.png" class="dialogimage">
+    <md-dialog aria-label="Autocomplete Dialog Example" class="md-padding" flex=100 style="background-color: rgb(43, 43, 43)">
+        <div class="progress-container animate-show-hide" flex layout="row" layout-align="center center" ng-show="buttonclicked">
+            <md-progress-circular md-diameter="75"></md-progress-circular>
+        </div>
+        <form name="seatform">
+            <div layout="row" class="md-toolbar-tools">
+                <!--  <img src="img/chair.png" class="dialogimage"> -->
+                <h3 class="border-bottom dialogheader">Add Seats</h3>
+            </div>
+            <md-dialog-content class="md-dialog-content text-dark" ng-cloak ng-if="seattypes.length>0" style="overflow-y:scroll;max-height:450px">
+                <!--  <div ng-if="selected.width" draggable class="seat {{selected.class}}" model="selected" ng-style="styobj"></div> -->
+
+                <div layout="row" layout-wrap layout-align="start center" ng-repeat="seattype in seattypes">
+                    <div flex=50 flex-sm=100 flex-xs=100 flex-md=50 class="text-white">
+                        <div layout="row" layout-wrap layout-align="start center">
+                            <div flex=20 flex-sm=20 flex-xs=20 flex-md=20 class="text-white">
+                                <div class="seat {{seattype.shape}}" style="position: inherit;" ng-if="seattype.shape === selected.class" ng-style="styobj"></div>
+                                <div class="seat {{seattype.shape}}" style="position: inherit;" ng-if="seattype.shape !== selected.class"></div>
+                            </div>
+                            <div flex=20 flex-sm=20 flex-xs=20 flex-md=20 class="text-white">
+                                <md-checkbox aria-label="Select Shapes" ng-model="seattype.selected" style="margin-bottom:0px">
+
+                                </md-checkbox>
+                                <!--  <sb-checkbox  ng-model="seattype.selected" /> -->
+                                <!--   <input type="checkbox" ng-model="seattype.selected" style="height:25px;width:35px"> -->
+                            </div>
+                            <div flex=60 flex-sm=60 flex-xs=60 flex-md=60 class="text-white">
+                                <md-input-container class="text-white" style="margin:0">
+                                    {{seattype.name}}
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div flex=25 flex-sm=50 flex-xs=50 flex-md=50>
+                        <md-input-container class="text-white" style="margin:0">
+                            <input ng-required="seattype.selected" type="number" ng-model="seattype.nos" placeholder="No. of Seats" ng-disabled="!seattype.selected"
+                                style="border-bottom: solid;border-bottom-width: 0.1px;">
+                        </md-input-container>
+                    </div>
+                    <div flex=25 flex-sm=50 flex-xs=50 flex-md=50>
+                        <md-input-container class="text-white" style="margin:0">
+                            <input type="number" name="size_{{$index}}" ng-model="seattype.size" style="border-bottom: solid;border-bottom-width: 0.1px;"
+                                ng-change="demoseatshape(seattype,seattypeform)" max="30" placeholder="Seat Size" limit-to-max
+                                ng-disabled="!seattype.selected">
+
+                        </md-input-container>
+                    </div>
+                </div>
+
+            </md-dialog-content>
+            <md-dialog-content class="md-dialog-content text-white" ng-cloak layout-align="center center" ng-if="seattypes.length<=0">
+                <h3>Please Configure Seat Types</h3>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <!-- <div flex layout="row" layout-align="stretch">
+            <div flex layout="column" layout-align="center stretch">
+                <md-button class="md-raised md-primary" ng-click="closeDialog()">Cancel</md-button>
+            </div>
+            <div flex layout="column" layout-align="center stretch">
+                <md-button class="md-raised md-primary" ng-click="creatseats(seattypes)">Done</md-button>
+            </div>
+            </div> -->
+                <md-button class="md-raised md-primary" ng-click="closeDialog()">Cancel</md-button>
+
+                <md-button class="md-raised md-primary" ng-disabled="buttonclicked" ng-click="creatseats(seattypes,seatform)">Done</md-button>
+
+            </md-dialog-actions>
+
+        </form>
+    </md-dialog>
+</div>

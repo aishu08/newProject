@@ -1,0 +1,36 @@
+<!-- <md-container layout="row" class="full-height"> -->
+<!-- <md-content layout="column" flex style="height:100vh"> -->
+<md-content layout="row" class="full-height">
+    <md-content flex class="">
+        <section layout="row" class="full-height" ng-cloak ng-class="{'blurred':blur_content}" flex>
+            <md-content layout="row" layout-align="center center" class="adappt-watermark-image-dark main-content padding" flex style="overflow-y:hidden">
+                <div layout="column" flex="95">
+                    <md-card layout="column" flex>
+                        <md-card-header layout="row" class="banner user-mgt" flex="20">
+                            <span flex="80">Employee-Management</span>
+                            <div flex="20" class="text-right">
+                                <md-button class="md-fab md-mini addbutton delete-icon" ng-click="addDummyCol()">
+                                    <i class="material-icons addicon">add</i>
+                                    <md-tooltip md-direction="bottom" class="md-tooltip-bottom">Add Dummy Columns</md-tooltip>
+                                </md-button>
+                            </div>
+                        </md-card-header>
+                        <div flex id="grid1" ui-grid="gridOptions" class="grid" ui-grid-resize-columns ui-grid-auto-resize ui-grid-edit ui-grid-selection ui-grid-exporter flex></div>
+                        <md-card-actions layout="row" layout-align="end end">
+                            <md-button class="md-primary md-raised" ng-click="saveAll(rowsEdited)" ng-disabled="selectAll">Save</md-button>
+                            <md-button class="md-primary md-raised" ng-disabled="delete" ng-click="deleteEmployee(selectedRows)">Delete</md-button>
+                            <md-button class="md-primary md-raised" ng-click="employeeDialog()"> Add Employee</md-button>
+                            <md-button ui-sref="assignPeople" class="md-primary md-raised" ng-click="redirect()"> Assign Seat</md-button>
+                            <md-button ui-sref="parkingAllotment" class="md-primary md-raised" ng-click="redirect()"> Assign Parking</md-button>
+                            <md-button ui-sref="lockerRoom" class="md-primary md-raised" ng-click="redirect()"> Assign Lockers</md-button>
+                            <md-button type="file" file-model="importFile" name="importFile" class="md-primary md-raised" ngf-select="importExcel($file)" name="importFile">Import Excel</md-button>
+                        </md-card-actions>
+                    </md-card>
+                    <span class="text-white">{{msg}}</span>
+                </div>
+            </md-content>
+        </section>
+    </md-content>
+</md-content>
+<!-- </md-content> -->
+<!-- </md-container>

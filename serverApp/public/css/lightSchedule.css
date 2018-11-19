@@ -1,0 +1,182 @@
+.controls-style
+{
+    border:3px solid #00937D;
+    color:#FFF;
+    margin: 10px 5px;
+    text-align: center;
+}
+
+.days-style
+{
+    border:1px solid #00937D;
+    text-align:center;
+    margin:0px 1px;
+    color: #FFF;
+}
+.schedule-light
+{
+    height: 300px;
+    width: 300px;
+    background: #FFBF00;
+    border-radius: 50%;
+    margin: 10px 0px;
+}
+
+.time-style
+{
+    height: 30px;
+    width: 150px;
+    border: 3px solid #00937D;
+    color: #FFF;
+    text-align: center;
+}
+.sliderTime
+{
+    position: relative;
+    top: 115px;
+    text-align: center;
+    color: #FFF;
+}
+.scheduleDiv
+{
+    background:#00937D;
+    color:#FFF;
+    text-align:center;
+    margin:10px;
+}
+
+.scheduleDivMargin
+{
+    margin: 0px 10px;
+}
+
+.scheduleInput
+{
+    color: #FFF !important;
+    border-color: #FFF !important;
+}
+
+.addScheduleButton
+{
+    background: #00937D;
+    color: #FFF;
+}
+
+.slideInDown 
+{
+  
+  animation-name: slideInDown;    
+  animation-duration: 1s;     
+  animation-fill-mode: both;
+}
+
+.fadeOutUp 
+{
+    animation-name: fadeOutUp;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeOutUp 
+{
+    0% 
+    {
+        opacity: 1;
+    }
+    100% 
+    {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+} 
+  
+@keyframes slideInUp
+{
+    0% 
+    {
+      transform: translateY(0);
+    }
+    100% 
+    {
+        visibility: hidden;
+        transform: translateY(-100%);
+    }
+} 
+
+@keyframes slideInDown 
+{
+    0% 
+    {
+      transform: translateY(-100%);
+      visibility: visible;
+    }
+    100% 
+    {
+      transform: translateY(0);
+    }
+} 
+
+.md-danger
+{
+    color: rgba(255,255,255,0.87)!important;
+    background-color: rgb(200,75,0)!important;
+}
+
+md-slider .md-track-ticks
+{
+    color: rgba(0,0,0,0.38);
+}
+
+/*@keyframes glow
+{
+    from{ box-shadow: 0px 0px 15px #FFF;}
+    to { box-shadow: 0px 0px 5px #FFF;}
+
+}*/
+
+@keyframes glow
+{
+    from{ transform:scale(1.1);box-shadow: 0px 0px 15px #FFF;}
+    to { transform:scale(1);box-shadow: 0px 0px 5px #FFF;}
+}
+
+.glow
+{
+    animation: glow 0.5s infinite;
+    animation-direction:alternate-reverse;
+    background: rgba(255,255,255,0);
+}
+
+.selected
+{
+    background: #00937D!important;
+}
+
+md-input-container {
+    width: 100%;
+}
+.ui-timepicker-list li {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+li.ui-timepicker-selected, .ui-timepicker-list li:hover, .ui-timepicker-list .ui-timepicker-selected:hover {
+    background: #00937D!important;
+    color: #fff;
+}
+.ui-timepicker-wrapper {
+    width: 21.5em!important;
+}
+
+.dimLevel
+{
+    position: relative;
+    /*margin-top: 50%;*/
+    transform: rotate(-90deg);
+    color:#FFF;
+    width: 20px;
+}
+.scheduleLight
+{
+    background: #FFF;
+}

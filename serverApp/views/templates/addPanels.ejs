@@ -1,0 +1,41 @@
+<div flex=20>
+    <img src="img/chair.png" class="dialogimage">
+    <md-dialog aria-label="Autocomplete Dialog Example" class="md-padding" flex=100 style="background-color: rgb(43, 43, 43)">
+        <div class="progress-container animate-show-hide" flex layout="row" layout-align="center center" ng-show="buttonclicked">
+            <md-progress-circular md-diameter="75"></md-progress-circular>
+        </div>
+        <form name="sensorform">
+            <div layout="row" class="md-toolbar-tools">
+
+                <h3 class="border-bottom dialogheader">Add Touch Panels</h3>
+            </div>
+            <md-dialog-content class="md-dialog-content text-dark" ng-cloak>
+                <!--  <div ng-if="selected.width" draggable class="seat {{selected.class}}" model="selected" ng-style="styobj"></div> -->
+
+                <div layout="row" layout-wrap layout-align="start center">
+                    <div flex=20 flex-sm=100 flex-xs=100 flex-md=50 class="text-white">
+
+                        <div class="touch-panel" style="position: inherit;" ng-style="styobj"></div>
+
+                    </div>
+
+                    <div flex=80 flex-sm=50 flex-xs=50 flex-md=50>
+                        <md-input-container class="text-white">
+                            <input required type="number" ng-model="sensortype.nos" placeholder="No. of Touch Panels">
+                        </md-input-container>
+                    </div>
+                </div>
+
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+
+                <md-button class="md-raised md-primary" ng-click="closeDialog()">Cancel</md-button>
+
+                <md-button class="md-raised md-primary" ng-disabled="buttonclicked" ng-click="createPanels(sensortype,sensorform)">Done</md-button>
+
+            </md-dialog-actions>
+
+        </form>
+    </md-dialog>
+</div>

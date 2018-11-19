@@ -1,0 +1,63 @@
+<div flex=25>
+    <img src="img/three-buildings.png" class="dialogimage">
+
+    <md-dialog aria-label="Autocomplete Dialog Example" class="md-padding" flex=100 style="background-color: rgb(43, 43, 43)">
+        <div layout="row" class="md-toolbar-tools">
+            <h3 class="border-bottom dialogheader"> Add Building</h3>
+
+        </div>
+        <form type="post" name="buildingform" ng-submit="CreateBuildingdetails(building_details)">
+            <md-dialog-content class="md-dialog-content text-dark" ng-cloak>
+
+                <md-input-container class="md-block text-white">
+                    <input required md-no-asterisk type="text" name="name" ng-model="building_details.name" placeholder="Name" />
+                    <div ng-messages="buildingform.name.$error">
+                        <div ng-message="required">Name is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block text-white">
+                    <input required md-no-asterisk type="number" name="nof" ng-model="building_details.nof" ng-minlength="1" placeholder="Number of floors"
+                    />
+                    <div ng-messages="buildingform.nof.$error">
+                        <div ng-message="required">Number of Floors is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block text-white">
+                    <input md-no-asterisk type="text" name="logitude" ng-model="building_details.longitude" placeholder="Longitude" />
+                    <div ng-messages="buildingform.longitude.$error">
+                        <div ng-message="required">Longitude is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block text-white">
+                    <input md-no-asterisk type="text" name="latitude" ng-model="building_details.latitude" placeholder="Latitude" />
+                    <div ng-messages="buildingform.latitude.$error">
+                        <div ng-message="required">Latitude is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block text-white">
+                    <md-select required name="tz" ng-model="building_details.timezone" placeholder="Select TimeZone" class="darktheme" ng-change="selectedItemChange(building_details.timezone)">
+                        <md-optgroup label="Time Zones">
+                            <md-option ng-repeat="tz in timezonelist" value="{{tz}}">{{tz}}</md-option>
+                        </md-optgroup>
+                    </md-select>
+                    <div ng-messages="buildingform.tz.$error">
+                        <div ng-message="required">Please select TimeZone</div>
+                    </div>
+
+                </md-input-container>
+
+
+
+
+
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button class="md-raised md-primary" ng-click="closeDialog()">Cancel</md-button>
+
+                <md-button class="md-raised md-primary" type="submit">Done</md-button>
+
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</div>

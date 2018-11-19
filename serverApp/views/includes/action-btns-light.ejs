@@ -1,0 +1,8 @@
+<div ng-cloak class="action-btns">
+     <div ng-repeat="item in items">
+        <md-button aria-label="{{item.name}}" class="md-fab md-raised" ng-click="openDialog($event, item.type)" style = "background-color:#00937d;color:white">
+            <md-tooltip md-direction="{{item.direction}}" md-visible="tooltipVisible" md-autohide="false" class="md-tooltip-top">{{item.name}}</md-tooltip>
+            <md-icon aria-label="{{item.name}}" class="material-icons" style = "color:white">{{item.icon}}</md-icon>
+        </md-button>
+    </div>
+</div>

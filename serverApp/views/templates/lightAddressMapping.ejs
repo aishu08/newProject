@@ -1,0 +1,112 @@
+<md-content layout="row" class="full-height">
+    <md-content flex class="adappt-watermark-image-dark">
+        <div class="progress-container animate-show-hide" flex layout="row" layout-align="center center" ng-show="makingAjaxCall">
+            <md-progress-circular md-diameter="75"></md-progress-circular>
+        </div>
+        <div layout="column" class="full-height">
+            <div layout="row" layout-wrap layout-align="start center">
+                <div flex flex-sm=50 flex-xs=100 flex-md=50>
+                    <md-card layout='row' class="transparent" flex>
+                        <div flex="20" layout="row" layout-align="center center">
+                            <i class="floorwise-logo fa fa-building-o dashboard-logo-size"></i>
+                        </div>
+                        <div flex="80" class="card-container" layout="column" layout-align="center stretch">
+                            <md-select placeholder="Select Building" md-container-class="container_1" class="darktheme" ng-model="selection.building" ng-change="OnBuildingChange(selection.building)">
+                                <md-optgroup label="Buildings">
+                                    <md-option ng-repeat="building in buildings" ng-value="building">{{building.name}}</md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </div>
+                    </md-card>
+                </div>
+                <div flex flex-sm=50 flex-xs=100 flex-md=50>
+                    <md-card layout='row' class="transparent" flex>
+                        <div flex="20" layout="row" layout-align="center center">
+                            <md-icon class="floorwise-logo" md-whiteframe="3" md-svg-src='../img/noun_51470_cc.svg' md-svg-class=""></md-icon>
+                            <!--   <i class="material-icons floorwise-logo" md-whiteframe="3">&#xE0AF;</i> -->
+                        </div>
+                        <div flex="80" class="card-container" layout="column" layout-align="center stretch">
+                            <md-select placeholder="Select Floor" md-container-class="container_1" class="darktheme" ng-model="selection.floor" ng-change="OnFloorChange(selection.floor)">
+                                <md-optgroup label="Floors">
+                                    <md-option ng-value="fl" ng-repeat="fl in floors">{{fl.name}}</md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </div>
+                    </md-card>
+                </div>
+
+                <div flex flex-sm=50 flex-xs=100 flex-md=50>
+                    <md-card layout='row' class="transparent" flex>
+                        <div flex="20" layout="row" layout-align="center center">
+                            <md-icon class="floorwise-logo" md-whiteframe="3" md-svg-src='../img/noun_51470_cc.svg' md-svg-class=""></md-icon>
+                            <!--   <i class="material-icons floorwise-logo" md-whiteframe="3">&#xE0AF;</i> -->
+                        </div>
+                        <div flex="80" class="card-container" layout="column" layout-align="center stretch">
+                            <md-select placeholder="Select Device Type" md-container-class="container_1" class="darktheme" ng-model="deviceType" ng-change="onDeviceChange(deviceType)">
+                                <md-optgroup label="Devices">
+                                    <md-option value="light">Lights</md-option>
+                                    <md-option value="ssensor">Smart Sensors</md-option>
+                                    <md-option value="dsensor">Day Light Sensors</md-option>
+                                    <md-option value="touch">Touch Panels</md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </div>
+                    </md-card>
+                </div>
+                <div flex flex-sm=100 flex-xs=100 flex-md=100>
+                    <md-card layout='row' class="transparent sm-padding" flex layout-align="center stretch">
+
+                        <div flex=30 flex-sm=100 flex-xs=100 flex-md=100 layout="column" layout-align="center stretch">
+                            <md-button class="md-raised md-primary" ng-click="chooseUpload(selection)">Upload Address</md-button>
+                        </div>
+
+                    </md-card>
+                </div>
+            </div>
+            <div layout="row" layout-align="start center" set-class-when-at-top="fix-to-top" md-whiteframe="5">
+                <div flex flex-sm=50 flex-xs=100 flex-md=50 style="width: 100%;top: 20%;z-index: 1;">
+                    <md-card layout='row' class="transparent" flex>
+                        <div flex="100" class="card-container" layout-wrap layout="row" layout-align="center stretch" style="height:auto">
+                            <div ng-repeat="ble in deviceBles" class="light lightDeviceBle" ng-class="{mappedBle:ble.mapped==true}" dd-draggable="true" employee='ble'>
+                                <md-tooltip md-direction="bottom" class="md-tooltip-bottom">Address:<b>{{ble.address}}</b>
+                                </md-tooltip>
+                                <span>{{ble.name}}</span>
+
+                            </div>
+                        </div>
+                    </md-card>
+                </div>
+            </div>s
+            <div layout='column' flex>
+                <md-content class="tab-content-container">
+                    <div flex ng-if="showlayout" style="height:800px;overflow:scroll;">
+                        <md-content style="height:100%">
+                            <ul class="floor-layout" style="background: url('img/{{selectedfloor.layout}}') no-repeat center center; 
+                                width:{{selectedfloor.width}}px;height:{{selectedfloor.height}}px; background-size: contain;">
+
+                                <div ng-dblClick="showPopover($event,sensor,2)" ng-click="toggleselection($event,sensor)" model="sensor" ng-repeat="sensor in sensors" class="sensor" ng-class="{selected: sensor.selected,'dls':sensor.isDLS==true,'sos':sensor.isSOS==true,deviceMapped:sensor.bleAddress.length > 0}"
+                                    style="left:{{sensor.posX}}px; top: {{sensor.posY}}px; " dd-drop-target on-drop="assignBle(employee,sensor,2)">
+                                    <md-tooltip md-direction="bottom" class="md-tooltip-bottom">Name:<b>{{sensor.name}}</b> &nbsp;BLE ID:<span ng-repeat="bleN in sensor.bleName"><b>{{bleN}}&nbsp;</b></span>
+                                    </md-tooltip>
+                                </div>
+
+                                <div ng-dblClick="showPopover($event, light,1);" model="light" ng-repeat="light in lights| limitTo:100000" class="light {{light.class}}" style="width:{{light.width}}px; height: {{light.height}}px; left:{{light.posX}}px; top: {{light.posY}}px;" ng-class="{selected: light.selected,deviceMapped:light.bleAddress.length > 0}"
+                                    dd-drop-target on-drop="assignBle(employee,light,1)">
+                                    <md-tooltip md-direction="bottom" class="md-tooltip-bottom">Name:<b>{{light.name}}</b> &nbsp;BLE ID:<span ng-repeat="bleN in light.bleName"><b>{{bleN}}</b></span>
+                                    </md-tooltip>
+                                </div>
+
+                                <div ng-dblClick="showPopover($event, tp,3);" ng-right-click="selecttp($event,tp)" model="tp" ng-repeat="tp in touchpanels" class="touch-panel" ng-class="{selected: tp.selected,deviceMapped:tp.bleAddress.length > 0}" style="left:{{tp.posX}}px; top: {{tp.posY}}px;"
+                                    dd-drop-target on-drop="assignBle(employee,tp,3)">
+                                    <md-tooltip md-direction="bottom" class="md-tooltip-bottom">Name:<b>{{tp.name}}</b> &nbsp;BLE ID:<span ng-repeat="bleN in sensor.bleName"><b>{{bleN}}</b></span>
+                                    </md-tooltip>
+                                </div>
+                            </ul>
+                        </md-content>
+                    </div>
+                </md-content>
+            </div>
+        </div>
+    </md-content>
+    <div ng-include="'../includes/action-btns-light'"></div>
+</md-content>

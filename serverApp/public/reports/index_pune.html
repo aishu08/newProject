@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="RadarChart.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-pie-chart/2.1.6/jquery.easypiechart.min.js"></script>
+    <link rel="stylesheet" href="report.css">
+    <!--  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Libre+Franklin" rel="stylesheet">
+    <style>
+        body {
+            -webkit-print-color-adjust: exact;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="report-header">
+            <span class="client-logo">
+            </span>
+            <span class=" report-heading text-center">
+                Occupancy Management System
+            </span>
+        </div>
+    </div>
+    <div>
+        <div class="adappt-report" style="page-break-after: always;">
+            <div style="padding: 10px 0px;">
+                <table style="width: 100%;border-collapse: collapse; ">
+                    <tr>
+                        <td style = "width:13%">
+                            <label>
+                                <b>Date of Report Generation</b> 
+                            </label>
+                        </td>
+                        <td> <label>:<span id= 'date-today'></span></label></td>
+                        <td align="right">
+                            <label><b>Site Location:</b> Adappt</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style = "">
+                            <label><b>Report Period</b> 
+                            </label>
+                        </td>
+                        <td ><label>:<span id= 'date-today1'></span> from 12:00 AM to <span id = 'date-endDate'></span> <span id="currentTime"></span></label></td>
+                        <td align="right">
+                             <label>Building 1</label>
+                        </td>
+                        
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                    <tbody>
+                        <tr>
+                            <td class="sub-header">
+                                <h3 class="header" style="margin: 0px;">OCCUPANCY STATISTICS</h3>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="display: inline-block; top: -20px; position: relative;">
+                    <col width="130">
+                    <col width="40">
+                    <col width="80">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Total Seats
+                            </td>
+                            <td>
+                                :
+                            </td>
+                            <td>
+                                <span id="totalSeats">1590</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Total Used Seats
+                            </td>
+                            <td>
+                                :
+                            </td>
+                            <td>
+                                <span id="totalUsedSeats">1590</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="big-text"><span id="totalUsedSeats1">1590</span>/<span id="totalSeats11">1590</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="buildingPercent">
+                    <span id="buildingPercentValue">0%</span>
+                </div>
+                <hr>
+            </div>
+            <!-- <hr style="border-color:grey;"> -->
+            <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td class="sub-header">
+                            <h3 class="header" style="margin: 0px;">FULL BUILDING STATISTICS</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                    <tr>
+                        <div id="health" style="width: 100%; max-width:1014px; height: 450px"></div>
+                    </tr>
+                    <tr>
+                        <div id="occupancy" style="width: 100%; max-width:1024px; height: 450px"></div>
+                    </tr>
+                    <tr>
+                        <div id="bar-graph" style="width: 100%; max-width:1024px; height: 400px"></div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="adappt-report" style="page-break-after: always;">
+            <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td class="sub-header">
+                            <h3 class="header" style="margin: 0px;">LEVEL 3 STATISTICS</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <h3>Total Seats: <span id="totalSeats1"></span></h3>
+                        <div id="health1" style="width: 100%; max-width:1014px; height: 400px"></div>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <div id="occupancy1" style="width: 100%; max-width:1014px; height: 450px"></div>
+                    </td>
+                </tr>
+            </table>
+            
+            <div>
+                <table style="width: 100%;">
+                    <tr>
+                        <td width="300">
+                            <div style="text-align: center">
+                                <h3>% Floor Occupancy</h3>
+                                <div id="floorPercent1" class="floorPercent">
+                                    <span class="chartPercentValue">0%</span>
+                                </div>
+                            </div>
+                            <h4>
+                                Occupied Seats : <span id="occupied1"></span>
+                            </h4>
+                            <h4>
+                                TotalSeats : <span id="total1"></span>
+                            </h4>
+                        </td>
+                        <td>
+                            <div id="bu-util1" style="width: 100%; height: 350px"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <div id="room-util1" style="width: 100%; max-width:1014px; height: 400px"></div>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td width="200" style="text-align: center">
+                        <h3>Average Floor Temperature</h3>
+                        <img src="thermometer.png" width="150"><span class="big-text" id="avgTemp1">23&degC</span>
+                    </td>
+                    <td>
+                        <div id="temp-util1" style="width: 100%; height: 450px"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="adappt-report" style="page-break-after: always;">
+            <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td class="sub-header">
+                            <h3 class="header" style="margin: 0px;">LEVEL 4 STATISTICS</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <h3>Total Seats: <span id="totalSeats2"></span></h3>
+                        <div id="health2" style="width: 100%; max-width:1014px; height: 450px"></div>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <div id="occupancy2" style="width: 100%; max-width:1014px; height: 450px"></div>
+                    </td>
+                </tr>
+            </table>
+            
+            <div>
+                <table style="width: 100%;">
+                    <tr>
+                        <td width="300">
+                            <div style="text-align: center">
+                                <h3>% Floor Occupancy</h3>
+                                <div id="floorPercent2" class="floorPercent">
+                                    <span class="chartPercentValue">0%</span>
+                                </div>
+                            </div>
+                            <h4>
+                                Occupied Seats : <span id="occupied2"></span>
+                            </h4>
+                            <h4>
+                                TotalSeats : <span id="total2"></span>
+                            </h4>
+                        </td>
+                        <td>
+                            <div id="bu-util2" style="width: 100%; height: 350px"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <div id="room-util2" style="width: 100%; max-width:1014px; height: 400px"></div>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td width="200" style="text-align: center">
+                        <h3>Average Floor Temperature</h3>
+                        <img src="thermometer.png" width="150"><span class="big-text" id="avgTemp2">23&degC</span>
+                    </td>
+                    <td>
+                        <div id="temp-util2" style="width: 100%; height: 450px"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="adappt-report" style="page-break-after: always;">
+            <table style="width: 100%;margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td class="sub-header">
+                            <h3 class="header" style="margin: 0px;">LEVEL 5 STATISTICS</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <h3>Total Seats: <span id="totalSeats3"></span></h3>
+                        <div id="health3" style="width: 100%; max-width:1014px; height: 450px"></div>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <div id="occupancy3" style="width: 100%; max-width:1014px; height: 450px"></div>
+                    </td>
+                </tr>
+            </table>
+            
+            <div>
+                <table style="width: 100%;">
+                    <tr>
+                        <td width="300">
+                            <div style="text-align: center">
+                                <h3>% Floor Occupancy</h3>
+                                <div id="floorPercent3" class="floorPercent">
+                                    <span  class="chartPercentValue">0%</span>
+                                </div>
+                            </div>
+                            <h4>
+                                Occupied Seats : <span id="occupied3"></span>
+                            </h4>
+                            <h4>
+                                TotalSeats : <span id="total3"></span>
+                            </h4>
+                        </td>
+                        <td>
+                            <div id="bu-util3" style="width: 100%; height: 350px"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%">
+                        <div id="room-util3" style="width: 100%; max-width:1014px; height: 400px"></div>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td width="200" style="text-align: center">
+                        <h3>Average Floor Temperature</h3>
+                        <img src="thermometer.png" width="150"><span class="big-text" id="avgTemp3">23&degC</span>
+                    </td>
+                    <td>
+                        <div id="temp-util3" style="width: 100%; height: 450px"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript" src="script-pune.js"></script>
+</body>
+</html>

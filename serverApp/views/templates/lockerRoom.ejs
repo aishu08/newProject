@@ -1,0 +1,100 @@
+<section layout="row" class="full-height" flex>
+    <md-content layout="column" layout-fill>
+        <%- include("../includes/toolbar")%>
+            <md-content layout="row" class="adappt-watermark-image-dark" flex>
+                <%- include("../includes/empLockerSidenav")%>
+                    <div layout="column" flex>
+                        <div flex="10" layout="row">
+                            <div flex="8" hide-sm hide-xs hide-md layout="row" layout-align="center stretch">
+                                <md-card layout='row' layout-align="center center" class="transparent" flex="100">
+                                    <div flex="100" layout="row" layout-align="center center">
+                                        <md-button ui-sref="index.seatDashboard" class="md-primary md-raised back_btn">
+                                            <i class="fa fa fa-chevron-left back_icon"></i>
+                                            <span class="back_text">Back</span>
+                                        </md-button>
+                                    </div>
+                                </md-card>
+                            </div>
+                            <div layout="row" layout-align="center center" flex layout-wrap>
+                                <div flex="25" flex-sm="50" flex-xs="100" flex-md="50" layout="row" layout-align="center center">
+                                    <md-card layout='row' class="transparent" flex>
+                                        <div flex="20" layout="row" layout-align="center center">
+                                            <md-icon class="floorwise-logo" md-whiteframe="3" md-svg-src='../img/noun_51470_cc.svg' md-svg-class=""></md-icon>
+                                        </div>
+                                        <div flex="80" class="card-container">
+                                            <md-select ng-disabled="true" ng-model="selectedBuilding" placeholder="Building Selection" md-container-class="container_1" class="darktheme" ng-change="setfloor(selectedBuilding)">
+                                                <md-option ng-repeat="building in buildings" ng-value="{{building}}">{{building.bldgName}}</md-option>
+                                            </md-select>
+                                        </div>
+                                    </md-card>
+                                </div>
+                                <div flex="25" flex-sm="50" flex-xs="100" flex-md="50" layout="row" layout-align="center center">
+                                    <md-card layout='row' class="transparent" flex>
+                                        <div flex="20" layout="row" layout-align="center center">
+                                            <md-icon class="floorwise-logo" md-whiteframe="3" md-svg-src='../img/noun_51470_cc.svg' md-svg-class=""></md-icon>
+                                        </div>
+                                        <div flex="80" class="card-container">
+                                            <md-select ng-disabled="true" ng-model="selectedFloor" placeholder="Floor Selection" md-container-class="container_1" class="darktheme" ng-change="setBus(selectedFloor)">
+                                                <md-option ng-repeat="floor in floors" ng-value="{{floor}}">{{floor.name}}</md-option>
+                                            </md-select>
+                                        </div>
+                                    </md-card>
+                                </div>
+                                <div flex="25" flex-sm="50" flex-xs="100" flex-md="50" layout="row" layout-align="center center">
+                                    <md-card layout='row' class="transparent" flex>
+                                        <div flex="20" layout="row" layout-align="center center">
+                                            <i class="material-icons floorwise-logo" md-whiteframe="3">&#xE0AF;</i>
+                                        </div>
+                                        <div flex="80" class="card-container" layout="column" layout-align="center stretch">
+                                            <md-select ng-disabled="true" ng-model="selectedBu" placeholder="Business Unit Selection" class="darktheme" ng-change="set(selectedBu)">
+                                                <md-optgroup label="Business Units">
+                                                    <md-option ng-repeat="bu in bus" value="{{bu.name}}">{{bu.name}}</md-option>
+                                                </md-optgroup>
+                                            </md-select>
+                                        </div>
+                                    </md-card>
+                                </div>
+                                <div flex="25" flex-sm="50" flex-xs="100" flex-md="50" layout="row" layout-align="center center">
+                                    <md-card layout='row' class="transparent" flex>
+                                        <div flex="20" layout="row" layout-align="center center">
+                                            <md-icon class="floorwise-logo material-icons" md-whiteframe="3">search</md-icon>
+                                        </div>
+                                        <div flex="80" layout="row" class="card-container">
+                                            <md-input-container class="inputcontainers" flex>
+                                                <input type="text" placeholder="Search by Seat Name or Employee Name" ng-model="searchvalue" class="text-white" />
+                                            </md-input-container>
+                                        </div>
+                                    </md-card>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout="column" flex>
+                            <md-card layout="column" class="dark-theme" flex>
+                                <div class="text-center">
+                                    <div class="text-white">LEGEND</div>
+                                    <div class="inline-block">
+                                        <div class="block-legend isAssigned"></div>
+                                        <span class="text-white">Assigned</span>
+                                        <div class="block-legend legend-unAssigned"></div>
+                                        <span class="text-white">Un-Assigned</span>
+                                        <span style="margin:0px 20px"></span>
+                                        <span ng-repeat="bu in bus">
+                                            <div class="block-legend {{bu.class}}"></div>
+                                            <span class="text-white">{{bu.name}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <md-content class="tab-content-container" ng-class="{blurrred: loadingFloorData}" ng-cloak>
+                                    <div class="floor-layout-dark" style="background:url('/img/{{selectedFloor.layout}}') no-repeat center center; background-size: contain; width: {{selectedFloor.width}}px; height: {{selectedFloor.height}}px;">
+                                        <div dd-drop-target class="util_locker_block" ng-repeat="locker in lockers | filter:searchvalue " data="{{locker}}" ng-class="{isAssigned : locker.empId}" ng-style="{top:locker.posY+'px',left:locker.posX+'px', width:locker.width+'px', height:locker.height+'px'}"
+                                            ng-class="trial" ng-click="empDetails(locker)" on-drop="assignLocker(employee)">
+                                            <md-tooltip md-direction="top" class="md-tooltip-top">{{locker.name}}</md-tooltip>
+                                        </div>
+                                    </div>
+                                </md-content>
+                            </md-card>
+                        </div>
+                    </div>
+            </md-content>
+    </md-content>
+</section>

@@ -1,0 +1,90 @@
+<md-content layout="row" class="full-height">
+    <md-content flex class="adappt-watermark-image-dark">
+        <div class="progress-container animate-show-hide" flex layout="row" layout-align="center center" ng-show="makingAjaxCall">
+            <md-progress-circular md-diameter="75"></md-progress-circular>
+        </div>
+        <div layout-align="center center">
+            <div layout="column" layout-padding>
+                <div layout="row" layout-wrap layout-align="start center">
+                    <div flex flex-sm=50 flex-xs=100 flex-md=50>
+                        <md-card layout='row' class="transparent" flex>
+                            <div flex="20" layout="row" layout-align="center center">
+                                <i class="floorwise-logo fa fa-building-o dashboard-logo-size"></i>
+                                <!--   <md-icon class="floorwise-logo" md-whiteframe="3" md-svg-src='../img/noun_51470_cc.svg' md-svg-class=""></md-icon> -->
+                            </div>
+                            <div flex="80" class="card-container" layout="column" layout-align="center stretch">
+                                <md-select placeholder="Select Building" md-container-class="container_1" class="darktheme" ng-model="selection.building"
+                                    ng-change="OnBuildingChange(selection.building)">
+                                    <md-optgroup label="Buildings">
+                                        <md-option ng-repeat="building in buildings" ng-value="building">{{building.name}}</md-option>
+                                    </md-optgroup>
+                                </md-select>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div flex flex-sm=50 flex-xs=100 flex-md=50>
+                        <md-card layout='row' class="transparent" flex>
+                            <div flex="20" layout="row" layout-align="center center">
+                                <md-icon class="floorwise-logo" md-whiteframe="3" md-svg-src='../img/noun_51470_cc.svg' md-svg-class=""></md-icon>
+                            </div>
+                            <div flex="80" class="card-container" layout="column" layout-align="center stretch">
+                                <md-select placeholder="Select Floor" md-container-class="container_1" class="darktheme" ng-model="selection.floor" ng-change="OnFloorChange(selection.floor)">
+                                    <md-optgroup label="Floors">
+                                        <md-option ng-value="fl" ng-repeat="fl in floors">{{fl.name}}</md-option>
+                                    </md-optgroup>
+                                </md-select>
+                            </div>
+                        </md-card>
+                    </div>
+
+                    <div flex flex-sm=100 flex-xs=100 flex-md=100>
+                        <md-card layout='row' class="transparent sm-padding" flex layout-align="center stretch">
+
+                            <div flex=25 flex-sm=100 flex-xs=100 flex-md=100 layout="column" layout-align="center stretch">
+                                <md-button class="md-raised md-primary" ng-click="addseats(selection)">Create Seats</md-button>
+                            </div>
+                            <div flex=30 flex-sm=100 flex-xs=100 flex-md=100 layout="column" layout-align="center stretch">
+                                <md-button class="md-raised md-primary" ng-click="choosetemplate(selection)">Upload Seats</md-button>
+                            </div>
+                            <div flex=45 flex-sm=100 flex-xs=100 flex-md=100 layout="column" layout-align="center stretch">
+                                <md-button class="md-raised md-primary" ng-disabled="selectedseats.length<=0" ng-click="deleteseats()">Delete Selected Seats</md-button>
+                            </div>
+                        </md-card>
+                    </div>
+
+
+
+                </div>
+
+
+                <div flex ng-if="showlayout">
+
+
+                    <ul class="floor-layout" style="background: url('img/{{selectedfloor.layout}}') no-repeat center center; 
+                                    width:1680px;height:1050px; background-size: 100%;" id="selectable" selectable selectable-options="{filter:'li'}"
+                        selectable-list="seats" selectable-out="selectedseats" selectable-events="{start:'selectionStart($event, $ui, $selected, $list)', stop:'selectionStop($selected)'}">
+
+                        <div layout="row" layout-align="center center" class="room" ng-repeat="room in rooms" model=room draggable resizable rotatable
+                            ng-dblClick="showroomPopover($event,room, $index)" style="width:{{room.width}}px; height: {{room.height}}px;left:{{room.posX}}px; top: {{room.posY}}px; transform:rotate({{room.rotate}}deg)">{{room.name}}
+                            <!-- <md-tooltip md-direction="bottom" class = "md-tooltip-bottom">Click to edit/ Drag to position</md-tooltip> -->
+                        </div>
+
+
+                        <li draggable ng-click="toggleselection($event,seat)" ng-dblClick="showPopover($event, seat);" model="seat" ng-repeat="seat in seats| limitTo:100000"
+                            class="seat {{seat.class}}" style="width:{{seat.width}}px; height: {{seat.height}}px; left:{{seat.posX}}px; top: {{seat.posY}}px;"
+                            ng-class="{selected: seat.selected}">
+                            <md-tooltip md-direction="bottom" class="md-tooltip-bottom">Double click to edit/ Drag to position
+                                <b>"{{seat.name}}"</b>
+                            </md-tooltip>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </md-content>
+
+    <div ng-include="'../includes/action-btns'"></div>
+</md-content>

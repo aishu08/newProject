@@ -1,0 +1,312 @@
+.floor_selection {
+    background-color: #212121;
+    color: white;
+    height: 47px;
+    min-width: 230px;
+    font-size: 20px;
+    border-bottom: 1px solid #fff;
+}
+
+.bu_selection {
+    background-color: #212121;
+    color: white;
+    height: 47px;
+    min-width: 230px;
+    font-size: 20px;
+    border-bottom: 1px solid #fff;
+}
+
+.parameter_selection {
+    background-color: #212121;
+    color: white;
+    height: 53px;
+    min-width: 230px;
+    font-size: 20px;
+    border-bottom: 1px solid #fff;
+}
+
+.floor_container {
+    background-color: #dedede;
+    border-bottom: 2px solid #fff;
+}
+
+.bu_container {
+    background-color: #dedede;
+    border-bottom: 2px solid #fff;
+}
+
+.bus {
+    height: 28px;
+    margin-top: 7px;
+    max-height: inherit;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border: 2px solid #00937d!important;
+    width: 80px;
+    background-color: #00937d;
+    color: #fff;
+}
+
+.bus:hover {
+    transform: scale(0.9);
+    box-shadow: 0px 0px 10px 2px #fff;
+}
+
+.floors {
+    height: 28px;
+    margin-top: 7px;
+    max-height: inherit;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border: 2px solid #00937d!important;
+    width: 80px;
+    background-color: #00937d;
+    color: #fff;
+}
+
+.floors:hover {
+    transform: scale(0.9);
+    box-shadow: 0px 0px 10px 2px #fff;
+}
+
+.diamond {
+    height: 70px;
+    width: 70px;
+    background-color: #FBB91A;
+    transform: rotate(45deg);
+    margin: 20px 0 20px 0;
+    color: #fff;
+    direction: rtl;
+}
+
+.diamond:hover {
+    background-color: #FBB91A!important;
+    box-shadow: 0px 0px 10px 2px #fff;
+}
+
+.text-rotate {
+    transform: rotate(-45deg);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.tab {
+    background-color: #fff;
+}
+
+.full-height_top {
+    min-height: 220px;
+}
+
+.floor-layout-dark {
+    width: 1680px;
+    height: 1050px;
+    background: url(../img/Bolt-layout-1.png) no-repeat center center;
+    background-size: contain;
+    margin: auto;
+    color: #fff;
+    position: relative;
+}
+
+md-input-container .md-errors-spacer {
+    min-height: 0px;
+}
+
+.calendar-button {
+    position: fixed;
+    bottom: 7px;
+    right: 20px;
+}
+
+.print_icon {
+    color: #fff;
+    line-height: 1px;
+}
+
+.back-button {
+    position: fixed;
+    bottom: 7px;
+    right: 90px;
+}
+
+.options_icons {
+    background-color: #00937d;
+    color: white;
+}
+
+.icon_size {
+    font-size: 40px;
+}
+
+.inpt-cnt {
+    color: #fff!important;
+}
+
+.inpt-date-cnt {
+    color: #c6c7c7;
+    /*margin:15px 0 15px 0;*/
+}
+
+.inpt-date-cnt:focus {
+    color: #212121;
+}
+
+.bu-size {
+    font-size: 34px;
+}
+
+.floorwise-logo {
+    width: 45px;
+    color: #fff!important;
+    background: #00937d;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+    margin: auto;
+}
+
+.margin-top {
+    margin-top: 5px;
+}
+
+.highcharts-container {
+    width: 100% !important;
+}
+
+.highcharts-container svg {
+    width: 100%!important;
+}
+
+.highcharts-grid-line {
+    stroke: #ccc;
+}
+
+.tabs-card {
+    min-height: 372px!important;
+}
+
+md-tabs.md-default-theme md-ink-bar,
+md-tabs md-ink-bar {
+    color: #00937d!important;
+    background: #00937d!important;
+}
+
+md-tabs.md-default-theme md-ink-bar,
+md-tabs md-ink {
+    color: #00937d!important;
+    background: #00937d!important;
+}
+
+.tab-content-container {
+    width: 100%;
+    /*height:100%;*/
+    color: #fff;
+}
+
+.tab-content-container.lighttheme {
+    background-color: #FFF;
+    color: #2A2A2A;
+}
+
+.card-container {
+    padding: 8px 15px 8px 7px;
+}
+
+.selector-margin {
+    margin: -7px!important;
+    color: #ddd!important;
+}
+
+md-tabs-content-wrapper {
+    border-top: 1px solid #ddd;
+}
+
+md-select .md-select-value.md-select-placeholder {
+    color: #ddd!important;
+}
+
+md-select .md-select-value {
+    border-bottom-color: #ddd;
+}
+
+.md-select-value .md-select-icon {
+    color: #ddd!important;
+}
+
+.md-tab {
+    color: #ddd!important;
+}
+
+md-select:not([disabled]):focus .md-select-value {
+    color: #ddd;
+}
+
+.banner {
+    background-color: #00937d;
+    color: #fff;
+}
+
+.chart-card {
+    background-color: #3a3a3a;
+}
+
+.arraystorm-layoutView {
+    position: relative;
+    width: 1680px;
+    height: 1050px;
+    /* max-width: 1120px; */
+    /*max-height: 1100px;*/
+    background: url(../img/layout.png) no-repeat;
+    background-size: contain;
+    /* -webkit-transform: rotate(90deg); */
+}
+
+
+/* .arraystorm-layout
+{
+    position: relative;
+    width: 1680px;
+    height: 1050px; */
+
+
+/*max-width: 1120px;*/
+
+
+/*max-height: 1100px;*/
+
+
+/* top: 0px;
+    left: 0px;
+    background: url(../img/layout.png) no-repeat;
+    background-size: contain;
+    /*-webkit-transform: rotate(90deg);*/
+
+
+}
+*/ heat-map {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+heat-map div {
+    height: 100%;
+    width: 100%;
+}
+.daySensor {
+    position: absolute;
+    top: 590px;
+    left: 110px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #FFF;
+}
+.ng-cloak {
+    display: block !important;
+}

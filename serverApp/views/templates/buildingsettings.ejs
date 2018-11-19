@@ -1,0 +1,118 @@
+<md-content class="full-height adappt-watermark-image-dark" id="parent">
+    <div style="float:right" class="md-padding">
+        <md-button class="md-raised md-primary" ng-click="addbuilding()"> Add Building</md-button>
+    </div>
+
+    <div layout="row" layout-align="center center" style="color:#33937d;padding:5% 0% 5% 9%">
+        <h2> {{buildinglist[selection].name}}
+
+        </h2>
+        <md-button aria-label="menu" class="md-fab md-primary" style="height:40px;width:40px">
+            <md-icon aria-label="EditBuilding" class="material-icons" style="color:#000;" ng-click="editbuilding(buildinglist[selection])">edit</md-icon>
+        </md-button>
+    </div>
+    <div layout-align="center center" ng-if="buildinglist.length>0">
+
+        <div layout="row" layout-align="center center">
+            <div flex=10 flex-sm=50 flex-xs=100 flex-md=50 id="parent">
+                <div id="child">
+                    <i class="fa fa-chevron-left" style="color:#33937d; font-size:50px;" ng-click="leftClick()"></i>
+                </div>
+            </div>
+            <div flex=50 flex-sm=50 flex-xs=100 flex-md=50>
+
+                <div layout="row" layout-align="center center" class="text-white" ng-repeat="floor in floors">
+
+                    <div flex=50 flex-sm=50 flex-xs=100 flex-md=50 class="settingsrombus floorstatus1 text-white" ng-if="floor.layout && floor.cps && floor.fa"
+                        ng-click="editfloor(floor)" ng-style="{'z-index':{{floors.length}}-$index}">
+                        <span class="cfloor-name">{{floor.name}}</span>
+                    </div>
+                    <div flex=50 flex-sm=50 flex-xs=100 flex-md=50 class="settingsrombus floorstatus3 text-white" ng-if="!floor.layout" ng-click="editfloor(floor)"
+                        ng-style="{'z-index':{{floors.length}}-$index}">
+                        <span class="cfloor-name">{{floor.name}}</span>
+                    </div>
+                    <div flex=50 flex-sm=50 flex-xs=100 flex-md=50 class="settingsrombus floorstatus2 text-white" ng-if="((floor.layout && !floor.cps) ||(floor.layout && !floor.fa))"
+                        ng-click="editfloor(floor)" ng-style="{'z-index':{{floors.length}}-$index}">
+                        <span class="cfloor-name">{{floor.name}}</span>
+                    </div>
+
+                </div>
+            </div>
+            <div flex=10 flex-sm=50 flex-xs=100 flex-md=50 id="parent">
+                <div id="child">
+                    <i class="fa fa-chevron-right" style="color:#33937d;font-size:50px;" ng-click="rightClick()"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-white" layout-align="center center">
+        <div layout="column" layout-padding>
+            <div layout="row" layout-align="center center" layout-wrap style="margin-top:5%">
+                <div flex=20 flex-sm=100 flex-xs=100 flex-md=30>
+                    <div layout-align="center center">
+                        <div layout="column" layout-padding>
+                            <div layout="row" layout-wrap>
+                                <div flex=10 flex-sm=5 flex-xs=5 flex-md=10>
+                                    <div class="noinfo"></div>
+                                </div>
+                                <div flex=80 flex-sm=50 flex-xs=100 flex-md=80>
+                                    No information about Floor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div flex=20 flex-sm=100 flex-xs=100 flex-md=30>
+                    <div layout-align="center center">
+                        <div layout="column" layout-padding>
+                            <div layout="row" layout-wrap>
+                                <div flex=10 flex-sm=5 flex-xs=5 flex-md=10>
+                                    <div class="partial"></div>
+                                </div>
+                                <div flex=80 flex-sm=50 flex-xs=100 flex-md=80>
+                                    Partial information about Floor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div flex=20 flex-sm=100 flex-xs=100 flex-md=30>
+                    <div layout-align="center center">
+                        <div layout="column" layout-padding>
+                            <div layout="row" layout-wrap>
+                                <div flex=10 flex-sm=5 flex-xs=5 flex-md=10>
+                                    <div class="complete"></div>
+                                </div>
+                                <div flex=80 flex-sm=50 flex-xs=100 flex-md=80>
+                                    Complete information about Floor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div layout="row" layout-align="center center" layout-wrap>
+                <div flex=60 flex-sm=100 flex-xs=100 flex-md=90>
+                    <div layout-align="center center">
+                        <div layout="column" layout-padding>
+                            <div layout="row" layout-wrap>
+                                <div flex=5 flex-sm=5 flex-xs=5 flex-md=5>
+                                    Note
+                                </div>
+                                <div flex=60 flex-sm=50 flex-xs=100 flex-md=50>
+                                    : &nbsp;&nbsp; Click on floor for adding or editing floor information.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</md-content>

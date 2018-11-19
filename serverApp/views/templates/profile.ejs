@@ -1,0 +1,77 @@
+<section layout="row" class="full-height" ng-cloak ng-class="{'blurred':blur_content}" flex >   
+    <md-content layout="column" layout-fill>
+        <%- include("../includes/toolbar")%>
+        <md-content  class="adappt-watermark-image-dark main-content " layout="row" layout-align="center center" flex>
+            <!-- <md-card class='adappt_card'>
+                <div class="box"></div>
+            </md-card> -->
+            <md-card layout="row"  flex-gt-md="40" flex-xs="100" flex="80" class="adappt_card border" id="grad1">
+                <div class="content-profile"></div>
+                <!-- <div  id="grad"></div> -->
+                <div flex="35" layout="column" layout-align="center center" >
+                    <!-- <div class="moon"></div> -->
+                    <i class="material-icons profile_pic">account_circle</i>
+                    <span id="name">{{user.firstName}} {{user.lastName}}</span>
+                    <md-button class="md-primary md-raised">Edit Picture</md-button>
+                    <!-- <md-input-container class="md-primary md-raised"> 
+                        <input type="file"  value="Edit Picture"/>
+                    </md-input-container> -->
+                </div>
+                <md-card flex="65" class="transparent">
+                    <md-card-header layout="row" layout-align="center center" class="border-bottom-profile" >
+                        <h3>USER DETAILS</h3>
+                    </md-card-header>
+                    <div layout="column" class="profile_text padding">
+                       
+                        <md-input-container class="profile_inputs text-white padding" >
+                            <label class="text-white-profile">FirstName</label>
+                            <input type="text" ng-disabled="!chpassword" ng-model="user.firstName" autofocus />
+                        </md-input-container>
+                       
+                      
+                        <md-input-container class="profile_inputs text-white padding" >
+                            <label class="text-white-profile">LastName</label>
+                            <input type="text" ng-disabled="!chpassword" ng-model="user.lastName" autofocus />
+                        </md-input-container>
+                      
+                       
+                        <md-input-container class="profile_inputs text-white padding" >
+                            <label class="text-white-profile">Email</label>
+                            <input type="text" ng-disabled="!chpassword"  ng-model="user.email" autofocus />
+                        </md-input-container>
+                        
+                        <div layout="row" class="switch_class">
+                            <div flex="65">
+                                <span>Report Generation:</span>
+                            </div>
+                            <md-switch flex ng-model="user.reportPriority" class="md-primary profile_switch"  ng-true-value="'Enabled'" ng-false-value="'Disabled'" aria-label="Switch 1" ng-disabled ="disableReport" ng-change="userReport(user)">{{user.reportPriority}}</md-switch>
+                        </div>    
+                            
+                        <div layout="row" class="switch_class">
+                            <div flex="65">
+                               <span >Trigger Email:</span>
+                            </div> 
+                             <md-switch flex ng-model="user.emailPriority" class="md-primary profile_switch"  ng-true-value="'Enabled'" ng-false-value="'Disabled'" aria-label="Switch 1" ng-disabled ="disableEmail" ng-change="userEmail(user)">{{user.emailPriority}}</md-switch>
+                        </div>    
+                           
+                        
+                        <div  layout="row" class="padding" layout-align="end end">
+                            <md-button class="md-primary md-raised " ng-click="changePassword()">Change Password</md-button>
+                            <md-button class="md-primary md-raised " ng-click="chpassword = !chpassword" ng-show="!chpassword">Edit</md-button>
+                            <md-button class="md-primary md-raised" ng-show="chpassword" ng-click = "saveData()">Save</md-button>
+                        </div>
+                    </div>
+                </md-card>
+               
+            </md-card>
+        </md-content>
+        <md-content ui-sref="index.dashboard" layout="row" layout-align="center center" class="print-button">
+            <md-button  class="md-icon-button md-fab md-primary">
+                <md-icon class="print_icon">
+                    <i class="material-icons">keyboard_arrow_left</i>
+                </md-icon>
+                <md-tooltip md-direction="top" class="md-tooltip-top">Back</md-tooltip>
+            </md-button>
+        </md-content>
+    </md-content>
+</section>
