@@ -1,8 +1,0 @@
-<md-sidenav flex="15" md-component-id="left" class="md-sidenav-left md-whiteframe-glow-z1 dark-side-nav" md-is-locked-open="$mdMedia('gt-sm')" ng-cloak>
-    <span class="text-center big-text border-bottom padding empTitle">Employees</span>
-    <ul style="overflow-y:scroll; overflow-x:hidden; padding:5px;">
-        <li ng-cloak ng-repeat="emp in empData track by emp.id" dd-draggable="true" class="employees chip" employee='emp' ng-class="{isOpaque : emp.lockerId}">
-            <md-truncate>{{emp.firstName}} {{emp.lastName}}</md-truncate>
-        </li>
-    </ul>
-</md-sidenav>

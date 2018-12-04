@@ -1,2 +1,0 @@
-# Occupancy
-Adappt Occupancy Application
